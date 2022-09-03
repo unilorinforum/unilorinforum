@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps }) {
         <LeftSideBarComponent />
       </div>
     </div>
+    
   );
 }
 
