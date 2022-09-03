@@ -66,11 +66,9 @@ export default function Login() {
       <div className='flex flex-col md:justify-center  items-center bg-[#000000] px-2 h-screen '>
         <div className='flex flex-col justify-center mb-3 mt-12 items-center '>
           <h2 className='text-[#F1CB97] text-xl font-bold '>
-            Log into to  Forum App
+            Log into to Forum App
           </h2>
-          <span className='font-bold text-[#F1CB97] text-sm mt-2'>
-            
-          </span>
+          <span className='font-bold text-[#F1CB97] text-sm mt-2'></span>
         </div>
         <div className='bg-[#01183a] bg-gradient-to-l w-[361px] rounded-sm sm:mx-2 from-[#c6d7f4] px-10 mt-4 pt-2 h-min '>
           {' '}
@@ -104,7 +102,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minlength='1'
+                minLength='1'
                 placeholder='Enter password'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
