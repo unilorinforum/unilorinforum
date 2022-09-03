@@ -6,7 +6,7 @@ module.exports = {
     domains: ['sangw.in', 'localhost', 'picsum.photos'], // <== Domain name
   },
   swcMinify: true,
-  webpack5: true,
+  webpack: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false };
 
