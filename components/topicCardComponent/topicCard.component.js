@@ -65,7 +65,7 @@ const TopicCardComponent = () => {
         </div>
         <div className='mt-1'>
           <Image
-            src='/blood.png'
+            src='/blood.jpg'
             alt='auh'
             width={313}
             height={136}
