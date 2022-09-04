@@ -17,7 +17,7 @@ export default class Homepage extends Component {
           <TopicFilterComponent />
         </div>
 
-        <div className=' items-center flex flex-wrap justify-center'>
+        <div className=' grid grid-cols-1 md:grid-cols-2 content-center justify-items-center '>
           <TopicCardComponent />
           <TopicCardComponent />
           <TopicCardComponent />

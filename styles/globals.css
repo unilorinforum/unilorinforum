@@ -2,12 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Colors: */
+  --unnamed-color-ff0000: #ff0000;
+  --unnamed-color-ff1e1ed4: #ff1e1ed4;
+  --unnamed-color-ff434380: #ff434380;
+  --unnamed-color-ff3030ab: #ff3030ab;
+  --unnamed-color-ff505054: #ff505054;
+  --unnamed-color-ff50502b: #ff50502b;
+  --unnamed-color-00ff00: #00ff00;
+  --unnamed-color-1aff1ad4: #1aff1ad4;
+  --unnamed-color-31ff31ab: #31ff31ab;
+  --unnamed-color-47ff4780: #47ff4780;
+  --unnamed-color-58ff5854: #58ff5854;
+  --unnamed-color-67ff672b: #67ff672b;
+  --unnamed-color-000000: #000000;
+  --unnamed-color-232323d4: #232323d4;
+  --unnamed-color-393939ab: #393939ab;
+  --unnamed-color-53535380: #53535380;
+  --unnamed-color-6d6d6d54: #6d6d6d54;
+  --unnamed-color-8a8a8a2b: #8a8a8a2b;
+  --unnamed-color-ff9912: #ff9912;
+  --unnamed-color-ffa126d4: #ffa126d4;
+  --unnamed-color-ffad40ab: #ffad40ab;
+  --unnamed-color-ffb34d80: #ffb34d80;
+  --unnamed-color-ffb55354: #ffb55354;
+  --unnamed-color-ffbd652b: #ffbd652b;
+  --unnamed-color-002d72: #002d72;
+  --unnamed-color-133f82d4: #133f82d4;
+  --unnamed-color-1d498bab: #1d498bab;
+  --unnamed-color-3a65a780: #3a65a780;
+  --unnamed-color-4873b754: #4873b754;
+  --unnamed-color-6189c82b: #6189c82b;
+  --unnamed-color-f1cb97: #f1cb97;
+  --unnamed-color-355a92: #355a92;
+
+  /* Font/text values */
+  --unnamed-font-family-montserrat: Montserrat;
+  --unnamed-font-style-normal: normal;
+  --unnamed-font-style-italic: italic;
+  --unnamed-font-weight-300: 300px;
+  --unnamed-font-weight-600: 600px;
+  --unnamed-font-weight-normal: normal;
+  --unnamed-font-size-8: 8px;
+  --unnamed-font-size-10: 10px;
+  --unnamed-font-size-14: 14px;
+  --unnamed-font-size-16: 16px;
+  --unnamed-font-size-18: 18px;
+  --unnamed-font-size-20: 20px;
+  --unnamed-font-size-35: 35px;
+  --unnamed-character-spacing-0: 0px;
+  --unnamed-line-spacing-10: 10px;
+  --unnamed-line-spacing-13: 13px;
+  --unnamed-line-spacing-18: 18px;
+  --unnamed-line-spacing-19: 19px;
+  --unnamed-line-spacing-22: 22px;
+  --unnamed-line-spacing-24: 24px;
+  --unnamed-line-spacing-43: 43px;
+}
+
+/* Character Styles */
+.unnamed-character-style-1 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-18);
+  line-height: var(--unnamed-line-spacing-22);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-002d72);
+}
+.unnamed-character-style-2 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-600);
+  font-size: var(--unnamed-font-size-20);
+  line-height: var(--unnamed-line-spacing-24);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-355a92);
+}
+.unnamed-character-style-3 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-italic);
+  font-weight: var(--unnamed-font-weight-300);
+  font-size: var(--unnamed-font-size-14);
+  line-height: var(--unnamed-line-spacing-18);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-1d498bab);
+}
+.unnamed-character-style-4 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-600);
+  font-size: var(--unnamed-font-size-35);
+  line-height: var(--unnamed-line-spacing-43);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-f1cb97);
+}
+.unnamed-character-style-5 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-14);
+  line-height: var(--unnamed-line-spacing-18);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-002d72);
+}
+.unnamed-character-style-6 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-600);
+  font-size: var(--unnamed-font-size-16);
+  line-height: var(--unnamed-line-spacing-19);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-355a92);
+}
+.unnamed-character-style-7 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-300);
+  font-size: var(--unnamed-font-size-8);
+  line-height: var(--unnamed-line-spacing-10);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-133f82d4);
+}
+.unnamed-character-style-8 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-16);
+  line-height: var(--unnamed-line-spacing-19);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-355a92);
+}
+.unnamed-character-style-9 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-300);
+  font-size: var(--unnamed-font-size-8);
+  line-height: var(--unnamed-line-spacing-10);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-002d72);
+}
+.unnamed-character-style-10 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-600);
+  font-size: var(--unnamed-font-size-14);
+  line-height: var(--unnamed-line-spacing-18);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-002d72);
+}
+.unnamed-character-style-11 {
+  font-family: var(--unnamed-font-family-montserrat);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-10);
+  line-height: var(--unnamed-line-spacing-13);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-002d72);
+}
+
 @font-face {
   font-family: 'Montserrat', sans-serif;
   src: local(Montserrat), url(../assets/Montserrat-Bold.ttf) format();
 }
 html,
 body {
+  background: #ffffff;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -66,7 +227,6 @@ div.DraftEditor-editorContainer {
   margin: 1rem auto;
   padding: 0.5rem;
   border: 1px solid #999;
-  
 }
 h2 {
   font-size: 30px;
@@ -128,4 +288,111 @@ p {
   border-radius: 2px 2px 0 0;
   font-weight: 600;
   font-size: 25px;
+}
+
+/* topic card styles  */
+@media only screen and (max-width: 600px) {
+  .topic-card-title {
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600)
+      var(--unnamed-font-size-16) / var(--unnamed-line-spacing-19)
+      var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-355a92);
+    text-align: left;
+    font: normal normal 600 16px/19px Montserrat;
+    letter-spacing: 0px;
+    color: #355a92;
+    opacity: 1;
+  }
+  .author-name {
+    /* UI Properties */
+    font: var(--unnamed-font-style-normal) normal
+      var(--unnamed-font-weight-normal) var(--unnamed-font-size-14) /
+      var(--unnamed-line-spacing-18) var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-002d72);
+    text-align: left;
+    font: normal normal normal 14px/18px Montserrat;
+    letter-spacing: 0px;
+    color: #002d72;
+    opacity: 1;
+  }
+  .topic-card-dot {
+    /* top: 150px;
+    left: 288px;
+    width: 22px;
+    height: 4px; */
+    /* UI Properties */
+    /* background: #707070 0% 0% no-repeat padding-box; */
+    opacity: 1;
+  }
+  .topic-card-except {
+    /* UI Properties */
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-300)
+      var(--unnamed-font-size-8) / var(--unnamed-line-spacing-10)
+      var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-133f82d4);
+    text-align: left;
+    font: normal normal 300 8px/10px Montserrat;
+    letter-spacing: 0px;
+    color: #133f82d4;
+    opacity: 1;
+  }
+  .topic-likes-count {
+    width: 16px;
+    height: 10px;
+    /* UI Properties */
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-300)
+      var(--unnamed-font-size-8) / var(--unnamed-line-spacing-10)
+      var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-002d72);
+    text-align: left;
+    font: normal normal 300 8px/10px Montserrat;
+    letter-spacing: 0px;
+    color: #002d72;
+    opacity: 1;
+  }
+  .topic-viwes-count {
+    width: 13px;
+    height: 10px;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-300)
+      var(--unnamed-font-size-8) / var(--unnamed-line-spacing-10)
+      var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-002d72);
+    text-align: left;
+    font: normal normal 300 8px/10px Montserrat;
+    letter-spacing: 0px;
+    color: #002d72;
+    opacity: 1;
+  }
+  .topic-card-time {
+    width: 27px;
+    height: 10px;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-300)
+      var(--unnamed-font-size-8) / var(--unnamed-line-spacing-10)
+      var(--unnamed-font-family-montserrat);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-002d72);
+    text-align: left;
+    font: normal normal 300 8px/10px Montserrat;
+    letter-spacing: 0px;
+    color: #002d72;
+    opacity: 1;
+  }
+  .topic-card {
+    /* width: 393px;
+    height: 111px; */
+    background: #ffffff 0% 0% no-repeat padding-box;
+    opacity: 1;
+  }
+  .topic-card-avatar {
+    width: 40px;
+    height: 40px;
+    background: transparent 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    opacity: 1;
+  }
 }
