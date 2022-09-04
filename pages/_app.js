@@ -1,4 +1,5 @@
 import BannerComponent from '../components/bannerComponent/banner.component';
+import BottomNavComponent from '../components/bottomNavComponent/bottomNav.component';
 import Header from '../components/headerComponent/header.component';
 import LeftSideBarComponent from '../components/sideBarComponent/leftSide.component';
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
@@ -19,11 +20,13 @@ function MyApp({ Component, pageProps }) {
         <RightSideBarComponent />
         <div>
           <Component {...pageProps} />
+          <div className='flex items-center focus:'>
+            <BottomNavComponent />
+          </div>
         </div>
         <LeftSideBarComponent />
       </div>
     </div>
-    
   );
 }
 

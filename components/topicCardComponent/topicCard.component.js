@@ -63,6 +63,15 @@ const TopicCardComponent = () => {
             <p className='topic-likes-count'>10k</p>
           </span>
         </div>
+        <div className='mt-1'>
+          <Image
+            src='/blood.png'
+            alt='auh'
+            width={313}
+            height={136}
+            className='rounded-xl'
+          />
+        </div>
       </div>
 
       <div></div>

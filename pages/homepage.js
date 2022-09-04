@@ -26,6 +26,12 @@ export default class Homepage extends Component {
           <TopicCardComponent />
           <TopicCardComponent />
           <TopicCardComponent />
+          <TopicCardComponent />
+          <TopicCardComponent />
+          <TopicCardComponent />
+          <TopicCardComponent />
+          <TopicCardComponent />
+          <TopicCardComponent />
         </div>
       </div>
     );

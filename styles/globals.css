@@ -165,10 +165,11 @@
 @font-face {
   font-family: 'Montserrat', sans-serif;
   src: local(Montserrat), url(../assets/Montserrat-Bold.ttf) format();
+  background: #ffffff;
 }
 html,
 body {
-  background: #ffffff;
+  background: #ffffff !important;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -289,7 +290,9 @@ p {
   font-weight: 600;
   font-size: 25px;
 }
-
+.top-nav-sticky {
+  z-index: 100;
+}
 /* topic card styles  */
 @media only screen and (max-width: 600px) {
   .topic-card-title {
@@ -393,6 +396,30 @@ p {
     height: 40px;
     background: transparent 0% 0% no-repeat padding-box;
     border-radius: 8px;
+    opacity: 1;
+  }
+  .topic-filter-items {
+    background: #ced5e0 0% 0% no-repeat padding-box;
+    opacity: 1;
+  }
+  .topic-card-img {
+    width: 313px;
+    height: 136px;
+    background: transparent 0% 0% no-repeat padding-box;
+    border-radius: 15px;
+    opacity: 1;
+  }
+  .mobile-nav {
+    height: 56px;
+    background: #ced5e0 0% 0% no-repeat padding-box;
+    opacity: 1;
+    bottom: 0;
+  }
+  .mobile-nav-home {
+    width: 26px;
+    height: 22px;
+    /* background: var(--unnamed-color-002d72) 0% 0% no-repeat padding-box; */
+    /* background: #002d72 0% 0% no-repeat padding-box; */
     opacity: 1;
   }
 }
