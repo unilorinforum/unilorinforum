@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
         <RightSideBarComponent />
         <div>
           <Component {...pageProps} />
-          <div className='flex items-center focus:'>
+          <div className='flex justify-center items-center focus:'>
             <BottomNavComponent />
           </div>
         </div>

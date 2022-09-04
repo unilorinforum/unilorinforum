@@ -6,7 +6,7 @@ import { MdNotifications } from 'react-icons/md';
 
 const BottomNavComponent = () => {
   return (
-    <div className=' w-full mx-6 mobile-nav  fixed bottom-0 z-50 md:hidden flex  items-center justify-around'>
+    <div className=' w-11/12 mobile-nav  fixed bottom-0 z-50 md:hidden flex  items-center justify-around mx-4'>
       <div className='focus:border relative'>
         <Link href=''>
           <a>
