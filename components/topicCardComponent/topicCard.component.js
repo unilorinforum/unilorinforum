@@ -10,7 +10,7 @@ import {
 
 const style = {
   authorContainer: '',
-  authoImage: 'rounded-sm',
+  authoImage: 'rounded-sm object-contain',
   cardTop: '',
   authorName: '',
   topIcons: '',
@@ -69,7 +69,10 @@ const TopicCardComponent = () => {
             alt='auh'
             width={313}
             height={136}
-            className='rounded-xl'
+            // objectFit='cover'
+            // layout='fill'
+            // quality={100}
+            className='rounded-xl '
           />
         </div>
       </div>
