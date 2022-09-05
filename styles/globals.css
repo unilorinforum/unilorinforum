@@ -222,6 +222,11 @@ h1 {
 div.DraftEditor-editorContainer {
   height: 100%;
 } */
+.active-filter{
+  background: var(--unnamed-color-002d72) !important;
+  color: #ffffff;
+  
+}
 .App {
   font-family: sans-serif;
   max-width: 33rem;
