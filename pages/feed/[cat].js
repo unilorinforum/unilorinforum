@@ -5,6 +5,7 @@ import TopicFilterComponent from '../../components/topicFilterComponent/topicFil
 
 const Feed = () => {
     const router = useRouter()
+    const cat =  router.query.cat
 
   return (
     <div>
