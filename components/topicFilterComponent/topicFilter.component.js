@@ -39,7 +39,7 @@ const TopicFilterComponent = () => {
           <a>Gossip</a>
         </Link>
       </span>
-      {/* <span
+      <span
         className={`${className} ${
           router.asPath == '/feed/trending' ? 'active-filter' : ''
         } `}
@@ -47,7 +47,7 @@ const TopicFilterComponent = () => {
         <Link href={`/feed/trending`}>
           <a>Trending</a>
         </Link>
-      </span> */}
+      </span>
       <span
         className={`${className} ${
           router.asPath == '/feed/story' ? 'active-filter' : ''
@@ -77,7 +77,7 @@ const TopicFilterComponent = () => {
       </span>
       <span
         className={`${className} ${
-          router.asPath == '/feed/voting' ? 'active-filter' : ''
+          router.asPath == '/feed/Voting' ? 'active-filter' : ''
         } `}
       >
         <Link href={`/feed/voting`}>
