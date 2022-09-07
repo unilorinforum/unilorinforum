@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
         <BannerComponent />
       </div>
       <div className='flex'>
-        <RightSideBarComponent />
+        {/* <RightSideBarComponent /> */}
         <div>
           <Component {...pageProps} />
           <div className='flex justify-center items-center focus:'>

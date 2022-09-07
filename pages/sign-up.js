@@ -40,7 +40,7 @@ export default function SignUp() {
     // console.log(data, 'ooo');
 
     try {
-      const endPoint = 'http://localhost:4000/api/users/register';
+      const endPoint = '/api/users';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
         // withCredentials: true,

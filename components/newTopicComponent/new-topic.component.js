@@ -80,6 +80,12 @@ class NewTopicComponent extends Component {
     }
 
   };
+ config = {
+  headers: { 'content-type': 'multipart/form-data' },
+  onUploadProgress: (event) => {
+    console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+  },
+};
 
   uploadhandler = (event) => {
     const image = event.target.files[0];
@@ -93,24 +99,25 @@ class NewTopicComponent extends Component {
     };
     const formData = new FormData();
     formData.append('image', image, image.name);
-    axios
-      .post('http://localhost:4000/api/images/upload', formData)
-      .then((res) => {
-        image.isUploading = false;
-        console.log(res.data.url);
-        this.setState({
-          coverImage: `http://localhost:4000/uploads/${res.data.url}`,
-          cover:true
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        removeImage(image.name);
-      });
+  const response = axios
+    .post('/api/uploads/imageupload', formData)
+    .then((res) => {
+      image.isUploading = false;
+      console.log(res);
+      // this.setState({
+      //   coverImage: `hhh`,
+      //   cover: true,
+      // });
+    })
+    .catch((error) => {
+      console.log(error);
+      removeImage(image.name);
+    });
+
   };
 
   render() {
-    const  cover = this.state.cover
+    const  cover = this.state.cover 
     return (
       <div>
         <div className='pt-2 items-center bg-gray-light'>
@@ -146,7 +153,7 @@ class NewTopicComponent extends Component {
                   <input
                     className='opacity-0 cursor-pointer input-btn  relative '
                     type='file'
-                    name='image'
+                    name='file'
                     onChange={this.uploadhandler}
                   />
                   <span className=' font-semibold cursor-pointer  absolute cover-btn w-1/1 top-0 left-0'>

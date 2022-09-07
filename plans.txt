@@ -1,0 +1,12 @@
+create user
+get all user
+get user by id
+delete update user
+update user password
+
+
+....user data on creation
+unique username
+email 
+password
+date of creation
