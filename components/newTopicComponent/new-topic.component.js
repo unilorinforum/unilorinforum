@@ -72,7 +72,7 @@ class NewTopicComponent extends Component {
 
     console.log('pacy:', payload);
     try{
-        const resp = await axios.post('http://localhost:4000/api/topics', payload, )
+        const resp = await axios.post('/api/topics/create', payload, )
         console.log(resp.data)
     } catch(error){
       console.log('error',error.respones)

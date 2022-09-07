@@ -22,7 +22,7 @@ const getUserById = async (req, res, next) => {
     const userData = await executeQuery(
       `SELECT * FROM USERS WHERE user_id=${id}`
     );
-    if(userData > 0) res.status(200).json(userData)
+    if (userData > 0) res.status(200).json(userData);
 
     next(new ErrorHandler(`no user found with this id ${id} `, 404));
   } catch (err) {
@@ -46,7 +46,6 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-
 // create user
 
 const createUser = async (req, res) => {
@@ -57,7 +56,6 @@ const createUser = async (req, res) => {
   body.password = hashSync(body.password, salt);
 
   try {
-    
     let emailResult = await executeQuery(
       `SELECT * FROM USERS WHERE email = "${body.email}"`
     );
@@ -66,33 +64,30 @@ const createUser = async (req, res) => {
         result: 0,
         message: 'this email is already exist',
       });
-
     } else {
       let usernameResult = await executeQuery(
         `SELECT * FROM USERS WHERE username = "${body.username}"`
       );
-      if(usernameResult.length >= 1){
-         res.send({
-           result: 0,
-           message: 'this username is alread taken',
-         });
-      }else{
-        
-      const createUserResult = await executeQuery(
-        `insert into users(username, email, password, regdate)
+      if (usernameResult.length >= 1) {
+        res.send({
+          result: 0,
+          message: 'this username is alread taken',
+        });
+      } else {
+        const createUserResult = await executeQuery(
+          `insert into users(username, email, password, regdate)
             value(?,?,?,?)`,
-        [body.username, body.email, body.password, date]
-      );
-      if (!createUserResult){
-            res.send('something went wrong')
-      }
+          [body.username, body.email, body.password, date]
+        );
+        if (!createUserResult) {
+          res.send('something went wrong');
+        }
         res.status(200).json({
           result: 1,
           message: 'registration sucessfull, systerm will redirect you',
         });
       }
     }
-
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -100,7 +95,44 @@ const createUser = async (req, res) => {
       error: err,
     });
   }
+};
+//login users
+const userLogin = async (req, res) => {
+  const body = req.body;
+  console.log(body);
+  console.log(body.password);
+  let results = await executeQuery(`SELECT * FROM users  where email = ?`, [
+    body.email,
+  ]);
 
+  if (results.length === 0) {
+    res.send('user');
+    res.json({
+      success: 0,
+      message: 'email is not registered',
+    });
+  } else {
+    const resultData = results[0];
+    const result = compareSync(body.password, resultData.password);
+    console.log();
+    if (result) {
+      results.password = undefined;
+
+      const jsontoken = sign({ result: results }, 'qwe1234', {
+        expiresIn: '1h',
+      });
+      return res.json({
+        success: 1,
+        message: 'logged in successfully',
+        token: jsontoken,
+      });
+    } else {
+      res.json({
+        success: 0,
+        message: 'password is not correct',
+      });
+    }
+  }
 };
 // update user password
-export { createUser, getAllUsers, getUserById, deleteUserById };
+export { createUser, getAllUsers, getUserById, deleteUserById, userLogin };

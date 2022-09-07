@@ -36,10 +36,9 @@ export default function Login() {
   const handleSubmmit = async (event) => {
     event.preventDefault();
     const data = { email, password };
-    console.log(data, 'ooo');
 
     try {
-      const endPoint = 'http://localhost:4000/api/users/login';
+      const endPoint = '/api/users/login';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
         // withCredentials: true,
@@ -49,7 +48,8 @@ export default function Login() {
       // console.log(JSON.stringify(response));
       setErrMsg(response.data.message);
       const accessToken = response.data.token;
-      console.log(accessToken);
+      console.log('res',response);
+      console.log('acess',accessToken);
       //redirect user after sucessfull login
       if (response.data.success == 1) {
         // console.log('fgf');
@@ -111,12 +111,12 @@ export default function Login() {
             <input
               className=' font-bold text-center text-[#faf9f9] w-[240px] h-[40px] bg-[#002D72] mt-8 cursor-pointer rounded-full border-2 '
               type='submit'
-              value='Sign Up'
+              value='Login'
             />
           </form>
           <div className='flex flex-col justify-items-center '>
             <span className='mt-6 text-center font-bold text-[#f4f2ef] '>
-              or sign up with Google
+              Login up with Google or facebook
             </span>
             <div className='flex justify-center space-x-4 mt-6 justify-self-center '>
               <span className='cursor-pointer bg-[#002d72] p-2 rounded-md '>
@@ -127,22 +127,11 @@ export default function Login() {
               </span>
             </div>
             <div className='flex flex-col justify-center text-sm items-center space-y-7 mt-4'>
-              <div className='text-[#e5e3e1] font-bold'>
-                By signing up you agree with our{' '}
-                <span className='text-[#120339]  font-bold'>
-                  {' '}
-                  terms of services agrements
-                </span>{' '}
-                and
-                <span className='text-[#120339] font-bold'>
-                  {' '}
-                  privacy policy
-                </span>
-              </div>
+             
               <div className=' mb-5 pb-6 text-[#e5e3e1] font-bold'>
-                alredy have an account?{' '}
+                {`Don't have an account?`} {' '}
                 <span className='text-[#120339] font-bold'>
-                  <Link href='/login'>Login</Link>
+                  <Link href='/sign-up'>Sign up</Link>
                 </span>{' '}
                 Instead
               </div>
