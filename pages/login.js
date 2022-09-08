@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import axios from 'axios';
 import Router from 'next/router';
+import {useSession, signIn, signOut} from 'next-auth/react'
 import React, { useState, useRef, useEffect } from 'react';
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
@@ -17,13 +18,18 @@ const styles = {
 };
 
 export default function Login() {
- 
+  const {data: session} = useSession()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const emailRef = useRef();
   const errRef = useRef();
-  
+   console.log(session);
+  if(session){
+    // Router.push('/')
+    console.log('loged in', session.user.email);
+  }
+ 
 
   useEffect(() => {
     emailRef.current.focus();
@@ -77,7 +83,7 @@ export default function Login() {
               ref={errRef}
               className='text-[#ffffff] text-center font-bold text-xl w-[300px] '
             >
-              {errMsg}
+              {errMsg} {session ? 'logined' : 'not'}
             </span>
           </div>
           <form
@@ -120,7 +126,7 @@ export default function Login() {
             </span>
             <div className='flex justify-center space-x-4 mt-6 justify-self-center '>
               <span className='cursor-pointer bg-[#002d72] p-2 rounded-md '>
-                <BsGoogle style={SocialLogin} />
+                <BsGoogle onClick={() => signIn()} style={SocialLogin} />
               </span>
               <span className='cursor-pointer bg-[#002d72] p-2  rounded-md '>
                 <BsFacebook style={SocialLogin} />
