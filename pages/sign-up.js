@@ -36,7 +36,7 @@ export default function SignUp() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
-    const data = {username, email, password };
+    const data = {username, email, password, passwordConfirm };
     // console.log(data, 'ooo');
 
     try {
@@ -50,7 +50,10 @@ export default function SignUp() {
 
       if (response.data.success == 1) {
         // console.log(response.data.success);
-        Router.push('/login')
+        setTimeout(() => {
+          Router.push('/login')
+        }, 5000);
+        
       }
     } catch (error) {}
   };
@@ -113,6 +116,16 @@ export default function SignUp() {
                 placeholder='Enter password'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
+              <input
+                name='passwordConfirm'
+                type='password'
+                value={passwordConfirm}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength='1'
+                placeholder='Enter password'
+                className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
+              />
             </div>
             {/* <p>{result.message}</p> */}
             <input
@@ -122,7 +135,7 @@ export default function SignUp() {
             />
           </form>
           <div className='flex flex-col justify-items-center '>
-            <span className='mt-6 text-center font-bold text-[#f4f2ef] '>
+            {/* <span className='mt-6 text-center font-bold text-[#f4f2ef] '>
               or sign up with Google
             </span>
             <div className='flex justify-center space-x-4 mt-6 justify-self-center '>
@@ -132,7 +145,7 @@ export default function SignUp() {
               <span className='cursor-pointer bg-[#002d72] p-2  rounded-md '>
                 <BsFacebook style={SocialLogin} />
               </span>
-            </div>
+            </div> */}
             <div className='flex flex-col justify-center text-sm items-center space-y-7 mt-4'>
               <div className='text-[#e5e3e1] font-bold'>
                 By signing up you agree with our{' '}

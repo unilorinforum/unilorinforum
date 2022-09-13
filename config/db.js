@@ -22,7 +22,8 @@ const executeQuery = (query, arraParms) =>{
     try {
       pool.query(query, arraParms, (err, data)=>{
         if(err){
-          console.log('error in database querry')
+          console.log('error in database querry', err)
+          
           reject(err)
         }
         resolve(data)

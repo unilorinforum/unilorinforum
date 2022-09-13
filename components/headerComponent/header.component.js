@@ -1,9 +1,12 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import { FaLessThanEqual } from 'react-icons/fa';
+import useAuth from '../../hooks/useAuth';
+
 
 const styles = {
+  
   content: 'max-w-7xl flex justify-between flex-1',
   logo: 'cursor-pointer object-conatain',
   logoContainer:
@@ -15,6 +18,10 @@ const styles = {
 };
 
 const Header = () => {
+  const { auth, setAuth } = useAuth();
+
+console.log('header', auth);
+
   const [sticky, setSticky] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +31,7 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   });
+
   return (
     <div
       className={`${
@@ -40,13 +48,25 @@ const Header = () => {
           <div className={styles.menuItem}>Contact</div>
           <div className={styles.menuItem}>About</div>
           <div className={styles.menuItem}>Policy</div>
-          <Link href={'/login'}>
-            <div className='font-bold'>Login</div>
-          </Link>
+          {auth.refreshToken ? (
+            <Link href={'/logout'}>
+              <div className='font-bold'>Logout</div>
+            </Link>
+          ) : (
+            <Link href={'/login'}>
+              <div className='font-bold'>Login</div>
+            </Link>
+          )}
 
-          <Link href={'/sign-up'}>
-            <div className={styles.signUpButton}>Get Started</div>
-          </Link>
+          {auth.refreshToken ? (
+            <Link href={'/Profile'}>
+              <div className={styles.signUpButton}>Profile</div>
+            </Link>
+          ) : (
+            <Link href={'/sign-up'}>
+              <div className={styles.signUpButton}>Get Started</div>
+            </Link>
+          )}
         </div>
       </div>
     </div>

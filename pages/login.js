@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import axios from 'axios';
 import Router from 'next/router';
-import {useSession, signIn, signOut} from 'next-auth/react'
 import React, { useState, useRef, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
+
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
+// import { useSession, signIn, signOut } from 'next-auth/react';
 const SocialLogin = {
   color: '#ffffff',
   size: '15px',
@@ -18,26 +20,26 @@ const styles = {
 };
 
 export default function Login() {
-  const {data: session} = useSession()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [errMsg, setErrMsg] = useState('')
+  const { auth, setAuth } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
   const emailRef = useRef();
   const errRef = useRef();
-   console.log(session);
-  if(session){
-    // Router.push('/')
-    console.log('loged in', session.user.email);
-  }
- 
+  useEffect(() => {
+    if (auth.accessToken) {
+      Router.push('/')
+      console.log(auth.accessToken);
+    }
+  }, [auth]);
 
   useEffect(() => {
     emailRef.current.focus();
   }, []);
 
   useEffect(() => {
-     setErrMsg('');
-   }, [email, password]);
+    setErrMsg('');
+  }, [email, password]);
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
@@ -47,23 +49,26 @@ export default function Login() {
       const endPoint = '/api/users/login';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
-        // withCredentials: true,
+        withCredentials: true,
       });
-
       // set user data
-      // console.log(JSON.stringify(response));
       setErrMsg(response.data.message);
-      const accessToken = response.data.token;
-      console.log('res',response);
-      console.log('acess',accessToken);
+
       //redirect user after sucessfull login
       if (response.data.success == 1) {
-        // console.log('fgf');
-        Router.push('/');
+        const accessToken = response.data.token;
+        const refreshToken = response.data.refreshToken;
+        console.log(response);
+        setPassword('');
+        setEmail('');
+        setAuth({
+          refreshToken,
+          accessToken,
+        });
+        console.log('down', auth.accessToken);
       }
     } catch (error) {
-      setErrMsg();
-      
+      setErrMsg('something went wrong');
     }
   };
 
@@ -83,7 +88,7 @@ export default function Login() {
               ref={errRef}
               className='text-[#ffffff] text-center font-bold text-xl w-[300px] '
             >
-              {errMsg} {session ? 'logined' : 'not'}
+              {errMsg}
             </span>
           </div>
           <form
@@ -121,21 +126,20 @@ export default function Login() {
             />
           </form>
           <div className='flex flex-col justify-items-center '>
-            <span className='mt-6 text-center font-bold text-[#f4f2ef] '>
+            {/* <span className='mt-6 text-center font-bold text-[#f4f2ef] '>
               Login up with Google or facebook
             </span>
             <div className='flex justify-center space-x-4 mt-6 justify-self-center '>
               <span className='cursor-pointer bg-[#002d72] p-2 rounded-md '>
-                <BsGoogle onClick={() => signIn()} style={SocialLogin} />
+                <BsGoogle onClick={googleSignIn} style={SocialLogin} />
               </span>
               <span className='cursor-pointer bg-[#002d72] p-2  rounded-md '>
-                <BsFacebook style={SocialLogin} />
+                <BsFacebook onClick={facebookSignIn} style={SocialLogin} />
               </span>
-            </div>
+            </div> */}
             <div className='flex flex-col justify-center text-sm items-center space-y-7 mt-4'>
-             
               <div className=' mb-5 pb-6 text-[#e5e3e1] font-bold'>
-                {`Don't have an account?`} {' '}
+                {`Don't have an account?`}{' '}
                 <span className='text-[#120339] font-bold'>
                   <Link href='/sign-up'>Sign up</Link>
                 </span>{' '}

@@ -1,22 +1,23 @@
-import { SessionProvider } from 'next-auth/react';
 import BannerComponent from '../components/bannerComponent/banner.component';
 import BottomNavComponent from '../components/bottomNavComponent/bottomNav.component';
 import Header from '../components/headerComponent/header.component';
 import LeftSideBarComponent from '../components/sideBarComponent/leftSide.component';
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
+import { AuthProvider } from '../context/authProvider';
+
 
 import '../styles/globals.css';
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({Component, pageProps}) {
   if (Component.getLayout) {
     return Component.getLayout(
-      <SessionProvider session={session}>
+      <AuthProvider>
         <Component {...pageProps} />
-      </SessionProvider>
+      </AuthProvider>
     );
   }
   return (
-    <SessionProvider session={session}>
+    <AuthProvider>
       <div className=''>
         <div className='w-screen'>
           <Header />
@@ -33,7 +34,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           <LeftSideBarComponent />
         </div>
       </div>
-    </SessionProvider>
+    </AuthProvider>
   );
 }
 
