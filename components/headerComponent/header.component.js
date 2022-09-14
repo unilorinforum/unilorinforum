@@ -19,8 +19,10 @@ const styles = {
 
 const Header = () => {
   const { auth, setAuth } = useAuth();
+  console.log('auth', auth.user_id);
 
-console.log('header', auth);
+
+// console.log('header', auth);
 
   const [sticky, setSticky] = useState(false);
   useEffect(() => {
@@ -48,7 +50,7 @@ console.log('header', auth);
           <div className={styles.menuItem}>Contact</div>
           <div className={styles.menuItem}>About</div>
           <div className={styles.menuItem}>Policy</div>
-          {auth.refreshToken ? (
+          {auth.user_id ? (
             <Link href={'/logout'}>
               <div className='font-bold'>Logout</div>
             </Link>
@@ -58,7 +60,7 @@ console.log('header', auth);
             </Link>
           )}
 
-          {auth.refreshToken ? (
+          {auth.user_id ? (
             <Link href={'/Profile'}>
               <div className={styles.signUpButton}>Profile</div>
             </Link>

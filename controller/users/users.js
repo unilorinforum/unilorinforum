@@ -3,8 +3,7 @@ const { sign } = require('jsonwebtoken');
 import { executeQuery } from '../../config/db';
 import moment from 'moment';
 import ErrorHandler from '../../common/errorHandler';
-import { serialize } from 'cookie';
-
+import { setCookie } from 'cookies-next';
 
 // get all user
 const getAllUsers = async (req, res, next) => {
@@ -126,35 +125,25 @@ const userLogin = async (req, res) => {
       const jsontoken = sign({ userData: resultData }, process.env.JWT_SECRET, {
         expiresIn: '1h',
       });
+      console.log(resultData.email);
 
-      const jsonRefreshtoken = sign(
-        { userData: resultData },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '2160h',
-        }
-      );
-      console.log(resultData.email)
-      const saveRefreshToken = await executeQuery( `UPDATE users SET refresh_token ='${jsonRefreshtoken}' WHERE email = '${resultData.email}'`)
-      if(!saveRefreshToken){
-        res.send('refreshToken was not saved in the database')
-
-      }
-      const serialized = serialize('forumappjwt', jsontoken, {
+      setCookie('UNILORINFORUM_JWT', jsontoken, {
+        req,
+        res,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 90, //90 days
         path: '/',
         sameSite: 'strict',
       });
-
-      res.setHeader('set-cookie', serialized);
+      const { user_id, username, email } = resultData;
       return res.json({
         success: 1,
         message: 'logged in successfully',
         token: jsontoken,
-        refreshToken:jsonRefreshtoken,
+        user_id,
+        username,
+        email,
       });
-
     } else {
       res.json({
         success: 0,
@@ -164,24 +153,29 @@ const userLogin = async (req, res) => {
   }
 };
 
-//logout user
 const logout = (req, res) => {
-  const { cookies } = req;
-  jwt = cookies;
-  const serialized = serialize('forumappjwt', null, {
-    httpOnly: true,
-    maxAge: -1, //90 days
-    path: '/',
-    sameSite: 'strict',
-  });
-  console.log(jwt);
-  res.setHeader('set-cookie', serialized);
-  res.json({
-    success: 1,
-    message: 'logged out sucessfully',
-  });
-};
-// update user password
+
+  try {
+    setCookie('UNILORINFORUM_JWT', null, {
+      req,
+      res,
+      httpOnly: true,
+      maxAge: 1, //90 days
+      path: '/',
+      sameSite: 'strict',
+    });
+    return res.json({
+      success: 1,
+      message: 'logged out successfully',
+    });
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+   
+
+}
 export {
   createUser,
   getAllUsers,

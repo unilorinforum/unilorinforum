@@ -1,17 +1,28 @@
-import React from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
+import axios from 'axios';
 import useAuth from '../hooks/useAuth';
+import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
 
-const Logout = () => {
-    const {setAuth} = useAuth()
-    const response = axios.get('api/users/logout')
-    console.log(response);
+const LogoutComponent = () => {
+  const { auth, setAuth } = useAuth();
+  const [mss, setMss] = useState('');
 
-    return (
-        <div>
-            
-        </div>
-    );
-}
+  const logOut = async () => {
+    const res = await axios.post('/api/users/logout');
+    setMss(res.data.message);
+    // console.log(res);
+    if (res.data.success == 1) {
+      Router.push('/');
+    }
+  };
+  useEffect(() => {
+    setAuth({});
+    logOut();
+    setCookie('FORUM_LOGIN_DATA', null, {
+      maxAge: 1,
+    });
+  }, [setAuth]);
+};
 
-export default Logout;
+export default LogoutComponent;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Router from 'next/router';
 import React, { useState, useRef, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
+import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
 
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
@@ -27,9 +28,8 @@ export default function Login() {
   const emailRef = useRef();
   const errRef = useRef();
   useEffect(() => {
-    if (auth.accessToken) {
-      Router.push('/')
-      console.log(auth.accessToken);
+    if (auth.user_id) {
+      Router.push('/');
     }
   }, [auth]);
 
@@ -56,18 +56,27 @@ export default function Login() {
 
       //redirect user after sucessfull login
       if (response.data.success == 1) {
-        const accessToken = response.data.token;
-        const refreshToken = response.data.refreshToken;
-        console.log(response);
         setPassword('');
         setEmail('');
-        setAuth({
-          refreshToken,
-          accessToken,
+        const { user_id, email, username, token } = response.data;
+        const userData = {
+          user_id: user_id,
+          email: email,
+          username: username,
+        };
+        setCookie('FORUM_LOGIN_DATA', userData, {
+          maxAge: 60 * 60 * 24 * 90, //90 days
+          path: '/',
+          sameSite: 'strict',
         });
-        console.log('down', auth.accessToken);
+        setAuth({
+          user_id,
+          email,
+          username,
+        });
       }
     } catch (error) {
+      console.log(error);
       setErrMsg('something went wrong');
     }
   };
@@ -101,7 +110,7 @@ export default function Login() {
                 type='email'
                 required
                 value={email}
-                autoComplete='off'
+                // autoComplete='off'
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Enter e-mail'
                 ref={emailRef}
