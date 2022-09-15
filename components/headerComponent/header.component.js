@@ -4,9 +4,7 @@ import Link from 'next/link';
 import { FaLessThanEqual } from 'react-icons/fa';
 import useAuth from '../../hooks/useAuth';
 
-
 const styles = {
-  
   content: 'max-w-7xl flex justify-between flex-1',
   logo: 'cursor-pointer object-conatain',
   logoContainer:
@@ -18,8 +16,7 @@ const styles = {
 };
 
 const Header = () => {
- c
-
+  const { auth, setAuth } = useAuth();
   const [sticky, setSticky] = useState(false);
   useEffect(() => {
     const handleScroll = () => {

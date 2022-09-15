@@ -11,7 +11,8 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
-  // console.log(cookies, 'gg');
+
+  
   useEffect(() => {
     if (hasCookie('FORUM_LOGIN_DATA')) {
       const cookie = getCookie('FORUM_LOGIN_DATA');
