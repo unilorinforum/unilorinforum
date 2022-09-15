@@ -210,6 +210,25 @@ h1 {
 }
 .DraftEditor-root{
   min-height: 150px;
+  padding: 10px;
+  
+}
+.public-DraftEditorPlaceholder-inner{
+  display: flex;
+  height: inherit;
+}
+.editableDiv1,
+.editableDiv2 {
+  border-bottom: 0px solid gray;
+  outline: none;
+  margin-top: 20px;
+}
+.editableDiv2[contentEditable="true"]:empty:before {
+  content: attr(placeholder)
+}
+
+.editableDiv1[contentEditable="true"]:empty:not(:focus):before {
+  content: attr(placeholder)
 }
 
 /* div.DraftEditor-root {

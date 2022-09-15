@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Editor from '@draft-js-plugins/editor';
+import 'draft-js/dist/Draft.css';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import Toolbar from './toolbar';
 import { customStyleFn } from './toolbar/customStyles';
@@ -13,36 +14,21 @@ class ContentInputComponent extends Component {
     };
     this.setDomEditorRef = (ref) => (this.domEditor = ref);
     this.focus = () => this.domEditor.focus();
-    // this.onChange = (editorState) => this.setState({ editorState });
-    // this.focus = () => this.refs.editor.focus();
   }
-  // componentDidMount() {
-  //   this.domEditor.focus();
-  // }
+
   saveContent = (content) => {
     window.localStorage.setItem(
       'content',
       JSON.stringify(convertToRaw(content))
     );
   };
-  toolBarOnclick = (e) =>{
-    e.preventDefault()
-    this.focus()
-  }
   onChange = (editorState) => {
     const contentState = editorState.getCurrentContent();
-    // console.log('content hhhh state', convertToHTML(contentState));
-
-    // this.props.handleArticleDescriptionChange(convertToRaw(contentState));
+    
     this.props.handleArticleDescriptionChange(convertToHTML(contentState));
 
     this.saveContent(contentState);
     this.setState({ editorState });
-    // this.setState({
-    //   convertedContent: convertToHTML(
-    //     this.state.editorState.getCurrentContent()
-    //   ),
-    // });
   };
 
   _getLengthOfSelectedText = () => {
@@ -147,8 +133,8 @@ class ContentInputComponent extends Component {
       return <h3 className='loading'>Loading...</h3>;
     }
     return (
-      <div className='my-5'>
-        <div className='flex space-x-3 rounded-lg my-2 items-center bg-[#f4f3f3] p-2'>
+      <div className=''>
+        <div  className='flex space-x-3 rounded-lg my-2 items-center bg-[#f4f3f3] p-2'>
           <Toolbar
             onClick={this.toolBarOnclick}
             editorState={editorState}
@@ -157,9 +143,8 @@ class ContentInputComponent extends Component {
           {/* <FaImage className='text-5xl text-center ' /> */}
         </div>
 
-        <div className='p-1 text-lg'>
+        <div className=' text-xl'>
           <Editor
-            placeholder='Write your topic content here..'
             customStyleFn={customStyleFn}
             // ref='editor'
             ref={this.setDomEditorRef}
@@ -168,6 +153,7 @@ class ContentInputComponent extends Component {
             onChange={this.onChange}
             onTab={this.onTab}
             spellCheck={true}
+            placeholder={'Write your topic content here..'}
           />
         </div>
       </div>

@@ -185,15 +185,14 @@ class NewTopicComponent extends Component {
                   suppressContentEditableWarning={true}
                   value={this.state.topicTitle}
                   onChange={this.handleTopicTitleChanage}
-                  className='p-2 my-3 font-semibold text-2xl'
-                >
-                  Your Title Here..
-                </div>
+                  className='p-2 my-3 font-semibold text-2xl border-none editableDiv2'
+                  placeholder='Your Title Here..'
+                ></div>
                 <Select
                   value={category}
                   onChange={this.handleCategorySelect}
                   options={categories}
-                  className='w-[300px] '
+                  className='w-[300px] z-10 '
                   placeholder={'Select A Sutable Category'}
                 />
               </div>
