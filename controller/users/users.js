@@ -71,7 +71,7 @@ const createUser = async (req, res) => {
       if (usernameResult.length >= 1) {
         res.send({
           success: 0,
-          message: 'this username is alread taken',
+          message: 'this username is alread taken ',
         });
       } else {
         if (body.password != body.passwordConfirm) {
