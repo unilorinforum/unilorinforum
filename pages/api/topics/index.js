@@ -1,9 +1,7 @@
 import nc from 'next-connect';
 import onError from '../../../common/errorMIddleWare';
-import { getUserById, deleteUserById } from '../../../controller/users';
-
+import { GetTopics } from '../../../controller/topics';
 
 const handler = nc(onError);
-handler.get( getUserById);
-handler.delete(deleteUserById);
+handler.get(GetTopics);
 export default handler;

@@ -18,7 +18,7 @@ const styles = {
 };
 
 const Header = () => {
-  const { auth, setAuth } = useAuth();
+ c
 
   const [sticky, setSticky] = useState(false);
   useEffect(() => {

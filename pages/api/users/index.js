@@ -1,6 +1,6 @@
 import nc from 'next-connect'
 import onError from '../../../common/errorMIddleWare';
-import { getAllUsers, createUser } from '../../../controller/users/users';
+import { getAllUsers, createUser } from '../../../controller/users';
 
 
 

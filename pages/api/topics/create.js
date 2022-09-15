@@ -1,8 +1,8 @@
 import nc from 'next-connect';
 import onError from '../../../common/errorMIddleWare';
-import {createUser } from '../../../controller/users';
+import { createTopic } from '../../../controller/topics';
 
 const handler = nc(onError);
-handler.post(createUser);
+handler.post(createTopic);
 
 export default handler;

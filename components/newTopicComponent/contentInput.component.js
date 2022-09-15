@@ -16,30 +16,19 @@ class ContentInputComponent extends Component {
     // this.onChange = (editorState) => this.setState({ editorState });
     // this.focus = () => this.refs.editor.focus();
   }
-  componentDidMount() {
-    this.domEditor.focus();
-  }
-  // focus = () => this.refs.editor.focus();
-
-  // saveContent = debounce((content) => {
-  //   window.localStorage.setItem(
-  //     'content',
-  //     JSON.stringify(convertToRaw(content))
-  //   );
-  // }, 1000);
-  // exportHTML = () => {
-  //   this.setState({
-  //     convertedContent: convertToHTML(
-  //       this.state.editorState.getCurrentContent()
-  //     ),
-  //   });
-  // };
+  // componentDidMount() {
+  //   this.domEditor.focus();
+  // }
   saveContent = (content) => {
     window.localStorage.setItem(
       'content',
       JSON.stringify(convertToRaw(content))
     );
   };
+  toolBarOnclick = (e) =>{
+    e.preventDefault()
+    this.focus()
+  }
   onChange = (editorState) => {
     const contentState = editorState.getCurrentContent();
     // console.log('content hhhh state', convertToHTML(contentState));
@@ -161,7 +150,7 @@ class ContentInputComponent extends Component {
       <div className='my-5'>
         <div className='flex space-x-3 rounded-lg my-2 items-center bg-[#f4f3f3] p-2'>
           <Toolbar
-            onClick={this.focus}
+            onClick={this.toolBarOnclick}
             editorState={editorState}
             updateEditorState={this.onChange}
           />
@@ -170,8 +159,6 @@ class ContentInputComponent extends Component {
 
         <div className='p-1 text-lg'>
           <Editor
-            // editorState={this.state.editorState}
-            // onChange={this.onChange}
             placeholder='Write your topic content here..'
             customStyleFn={customStyleFn}
             // ref='editor'

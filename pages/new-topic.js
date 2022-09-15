@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import Header from '../components/headerComponent/header.component';
-import NewTopicComponent from '../components/newTopicComponent/new-topic.component';
+import NewTopicComponent from '../components/newTopicComponent/newTopic.component';
 
 const NewTopic = () => {
   return (

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import axios from 'axios';
 import Router from 'next/router'
+import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
 // import FormInput from '../components/formInputComponent/forminput.component';
 import Header from '../components/headerComponent/header.component';
@@ -18,6 +19,7 @@ const styles = {
 };
 
 export default function SignUp() {
+  const { auth, setAuth } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +28,12 @@ export default function SignUp() {
   const emailRef = useRef();
   const errRef = useRef();
   const usernameRef = useRef();
+
+  useEffect(() => {
+    if (auth.user_id) {
+      Router.back();
+    }
+  }, [auth]);
 
   useEffect(() => {
     usernameRef.current.focus();

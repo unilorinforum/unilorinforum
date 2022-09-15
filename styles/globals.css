@@ -208,6 +208,9 @@ a {
 h1 {
   text-align: center;
 }
+.DraftEditor-root{
+  min-height: 150px;
+}
 
 /* div.DraftEditor-root {
   background-color: #fffef7;
