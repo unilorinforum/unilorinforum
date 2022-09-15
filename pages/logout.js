@@ -13,7 +13,7 @@ const LogoutComponent = () => {
     setMss(res.data.message);
     // console.log(res);
     if (res.data.success == 1) {
-      Router.push('/');
+      Router.back();
     }
   };
   useEffect(() => {

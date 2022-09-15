@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 
 const TopicFilterComponent = () => {
   const router = useRouter()
-  
-  console.log(router.asPath);
   const className= "topic-filter-items rounded-full  cursor-pointer  py-1 whitespace-nowrap flex flex-wrap px-4 text-[#002D72] font-bold  bg-[#CED5E0] " 
   
   return (

@@ -27,9 +27,10 @@ export default function Login() {
   const [errMsg, setErrMsg] = useState('');
   const emailRef = useRef();
   const errRef = useRef();
+
   useEffect(() => {
     if (auth.user_id) {
-      Router.push('/');
+      Router.back()
     }
   }, [auth]);
 
@@ -64,15 +65,16 @@ export default function Login() {
           email: email,
           username: username,
         };
-        setCookie('FORUM_LOGIN_DATA', userData, {
+        
+        setCookie('FORUM_LOGIN_DATA', JSON.stringify(userData), {
           maxAge: 60 * 60 * 24 * 90, //90 days
           path: '/',
           sameSite: 'strict',
         });
         setAuth({
-          user_id,
-          email,
-          username,
+          user_id: user_id,
+          email: email,
+          username: username,
         });
       }
     } catch (error) {

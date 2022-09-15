@@ -19,10 +19,6 @@ const styles = {
 
 const Header = () => {
   const { auth, setAuth } = useAuth();
-  console.log('auth', auth.user_id);
-
-
-// console.log('header', auth);
 
   const [sticky, setSticky] = useState(false);
   useEffect(() => {

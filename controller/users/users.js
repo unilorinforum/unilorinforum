@@ -53,16 +53,7 @@ const createUser = async (req, res) => {
   const body = req.body;
   const date = moment().format();
   const salt = genSaltSync(10);
-  if (body.password === body.passwordConfirm) {
-    console.log(body.passwordConfirm);
-    res.send({
-      success: 0,
-      message: 'password does not march',
-    });
-  } else {
-    body.password = hashSync(body.password, salt);
-    console.log(body.password);
-  }
+
 
   try {
     let emailResult = await executeQuery(
@@ -83,19 +74,29 @@ const createUser = async (req, res) => {
           message: 'this username is alread taken',
         });
       } else {
-        const createUserResult = await executeQuery(
-          `insert into users(username, email, password, regdate)
+        if (body.password != body.passwordConfirm) {
+          res.send({
+            success: 0,
+            message: 'password does not march',
+          });
+        } else {
+          body.password = hashSync(body.password, salt);
+          console.log(body.password);
+          const createUserResult = await executeQuery(
+            `insert into users(username, email, password, regdate)
             value(?,?,?,?)`,
-          [body.username, body.email, body.password, date]
-        );
-        if (!createUserResult) {
-          res.send('something went wrong');
+            [body.username, body.email, body.password, date]
+          );
+          if (!createUserResult) {
+            res.send('something went wrong');
+          }
+          res.status(200).json({
+            success: 1,
+            message: 'registration sucessfull, systerm will redirect you',
+          });
         }
-        res.status(200).json({
-          success: 1,
-          message: 'registration sucessfull, systerm will redirect you',
-        });
       }
+
     }
   } catch (err) {
     console.log(err);

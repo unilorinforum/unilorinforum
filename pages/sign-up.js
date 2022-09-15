@@ -21,6 +21,7 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const emailRef = useRef();
   const errRef = useRef();
@@ -37,10 +38,10 @@ export default function SignUp() {
   const handleSubmmit = async (event) => {
     event.preventDefault();
     const data = {username, email, password, passwordConfirm };
-    // console.log(data, 'ooo');
+    console.log(data, 'ooo');
 
     try {
-      const endPoint = '/api/users';
+      const endPoint = '/api/users/register';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
         // withCredentials: true,
@@ -120,10 +121,10 @@ export default function SignUp() {
                 name='passwordConfirm'
                 type='password'
                 value={passwordConfirm}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
                 required
                 minLength='1'
-                placeholder='Enter password'
+                placeholder='confirm password'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
             </div>
