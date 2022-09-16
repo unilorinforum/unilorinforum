@@ -3,16 +3,15 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Select from 'react-select';
 import axios from 'axios';
-import Link from 'next/link'
+import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 
-const ContentInputComponent = dynamic(import('./contentInput.Component'), {
+const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
-
-const TitleInputComponent = dynamic(import('./titleInput.component'), {
+const ContentInputComponent = dynamic(import('./contentInput.Component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
@@ -80,8 +79,8 @@ class NewTopicComponent extends Component {
     const titleHtml = draftToHTML(this.state.topicTitle);
     console.log('html:', titleHtml);
 
-     const contentHtml = draftToHTML(this.state.topicContent);
-     console.log('html:', contentHtml);
+    const contentHtml = draftToHTML(this.state.topicContent);
+    console.log('html:', contentHtml);
 
     let payload = {
       title: this.state.topicTitle,
