@@ -31,7 +31,8 @@ class ContentInputComponent extends React.Component {
     this._getLengthOfSelectedText = this._getLengthOfSelectedText.bind(this);
     this._handleBeforeInput = this._handleBeforeInput.bind(this);
 
-    this.focus = () => this.refs.editor.focus();
+    this.setDomEditorRef = (ref) => (this.domEditor = ref);
+    this.focus = () => this.domEditor.focus();
 
     this.handleKeyCommand = (command) => this._handleKeyCommand(command);
     this.onTab = (e) => this._onTab(e);
@@ -207,7 +208,7 @@ class ContentInputComponent extends React.Component {
               onChange={this.onChange}
               onTab={this.onTab}
               placeholder='write your article...'
-              ref='editor'
+              ref={this.setDomEditorRef}
               spellCheck={true}
             />
           </div>
