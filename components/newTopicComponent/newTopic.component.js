@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Select from 'react-select';
 import axios from 'axios';
 import Link from 'next/link'
-
+import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 
 const ContentInputComponent = dynamic(import('./contentInput.Component'), {
@@ -67,7 +67,6 @@ class NewTopicComponent extends Component {
     this.setState({
       topicTitle: titleEditorState,
     });
-    console.log(titleEditorState);
   };
 
   handleCategorySelect = (category) => {
@@ -77,6 +76,12 @@ class NewTopicComponent extends Component {
 
   handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    const titleHtml = draftToHTML(this.state.topicTitle);
+    console.log('html:', titleHtml);
+
+     const contentHtml = draftToHTML(this.state.topicContent);
+     console.log('html:', contentHtml);
 
     let payload = {
       title: this.state.topicTitle,
