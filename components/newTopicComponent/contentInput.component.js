@@ -1,35 +1,74 @@
 import React, { Component } from 'react';
-import Editor from '@draft-js-plugins/editor';
 import 'draft-js/dist/Draft.css';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import Toolbar from './toolbar';
-import { customStyleFn } from './toolbar/customStyles';
-import { convertToHTML, convertFromHTML } from 'draft-convert';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromRaw,
+  convertToRaw,
+} from 'draft-js';
+import {
+  FaBold,
+  FaUnderline,
+  FaItalic,
+  FaAnchor,
+  FaHeading,
+  FaQuoteLeft,
+  FaListOl,
+  FaListUl,
+} from 'react-icons/fa';
 
-class ContentInputComponent extends Component {
+const MAX_LENGTH = 10;
+
+class ContentInputComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
     };
-    this.setDomEditorRef = (ref) => (this.domEditor = ref);
-    this.focus = () => this.domEditor.focus();
+
+    this.onChange = this.onChange.bind(this);
+    this._getLengthOfSelectedText = this._getLengthOfSelectedText.bind(this);
+    this._handleBeforeInput = this._handleBeforeInput.bind(this);
+
+    this.focus = () => this.refs.editor.focus();
+
+    this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+    this.onTab = (e) => this._onTab(e);
+    this.toggleBlockType = (type) => this._toggleBlockType(type);
+    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
 
-  saveContent = (content) => {
-    window.localStorage.setItem(
-      'content',
-      JSON.stringify(convertToRaw(content))
-    );
-  };
   onChange = (editorState) => {
     const contentState = editorState.getCurrentContent();
-    
-    this.props.handleArticleDescriptionChange(convertToHTML(contentState));
+    //          console.log('content state', convertToRaw(contentState));
+
+    this.props.handletopicContentChange(convertToRaw(contentState));
 
     this.saveContent(contentState);
     this.setState({ editorState });
   };
+
+  componentDidMount() {
+    const rawContent = window.localStorage.getItem('rawContent');
+    const savedContent = EditorState.createWithContent(
+      convertFromRaw(JSON.parse(rawContent))
+    );
+    if (rawContent) {
+      this.setState({ editorState: savedContent });
+    } else {
+      this.setState({ editorState: EditorState.createEmpty() });
+    }
+  }
+
+  saveContent = (content) => {
+    const rawContent = convertToRaw(content);
+    window.localStorage.setItem('rawContent', JSON.stringify(rawContent));
+  };
+
+  // saveContent = (content) => {
+  //   window.localStorage.setItem('content', JSON.stringify(convertToRaw(content)));
+  // }
 
   _getLengthOfSelectedText = () => {
     console.log('say');
@@ -77,6 +116,7 @@ class ContentInputComponent extends Component {
 
     return length;
   };
+
   _handleBeforeInput = () => {
     console.log('hello');
     const currentContent = this.state.editorState.getCurrentContent();
@@ -119,9 +159,22 @@ class ContentInputComponent extends Component {
     this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
   }
 
+  _toggleBlockType(blockType) {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
+  }
+
+  _toggleInlineStyle(inlineStyle) {
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+    );
+  }
+
   render() {
     const { editorState } = this.state;
-    let className = 'RichEditor-editor';
+
+    // If the user changes block type before entering any text, we can
+    // either style the placeholder or hide it. Let's just hide it now.
+    let className = 'RichEditor-editor min-h-[200px]';
     var contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
       if (contentState.getBlockMap().first().getType() !== 'unstyled') {
@@ -133,32 +186,150 @@ class ContentInputComponent extends Component {
       return <h3 className='loading'>Loading...</h3>;
     }
     return (
-      <div className=''>
-        <div  className='flex space-x-3 rounded-lg my-2 items-center bg-[#f4f3f3] p-2'>
-          <Toolbar
-            onClick={this.toolBarOnclick}
-            editorState={editorState}
-            updateEditorState={this.onChange}
-          />
-          {/* <FaImage className='text-5xl text-center ' /> */}
-        </div>
-
-        <div className=' text-xl'>
-          <Editor
-            customStyleFn={customStyleFn}
-            // ref='editor'
-            ref={this.setDomEditorRef}
-            editorState={editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-            onTab={this.onTab}
-            spellCheck={true}
-            placeholder={'Write your topic content here..'}
-          />
+      <div>
+        <div className='text-xl font-normal  my-5 '>
+          <div className='flex px-2 bg-[#fdfafa] h-[50px]  space-x-[20px] items-center'>
+            <InlineStyleControls
+              editorState={editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+            <BlockStyleControls
+              editorState={editorState}
+              onToggle={this.toggleBlockType}
+            />
+          </div>
+          <div className={className} onClick={this.focus}>
+            <Editor
+              blockStyleFn={getBlockStyle}
+              customStyleMap={styleMap}
+              editorState={editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              onTab={this.onTab}
+              placeholder='write your article...'
+              ref='editor'
+              spellCheck={true}
+            />
+          </div>
         </div>
       </div>
     );
   }
 }
+
+// Custom overrides for "code" style.
+const styleMap = {
+  CODE: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2,
+  },
+};
+
+function getBlockStyle(block) {
+  switch (block.getType()) {
+    case 'blockquote':
+      return 'RichEditor-blockquote';
+    default:
+      return null;
+  }
+}
+
+class StyleButton extends React.Component {
+  constructor() {
+    super();
+    this.onToggle = (e) => {
+      e.preventDefault();
+      this.props.onToggle(this.props.style);
+    };
+  }
+
+  render() {
+    let className = 'RichEditor-styleButton ui button';
+    if (this.props.active) {
+      className += ' RichEditor-activeButton';
+    }
+
+    return (
+      <span className={className} onMouseDown={this.onToggle}>
+        {this.props.label}
+      </span>
+    );
+  }
+}
+
+const BLOCK_TYPES = [
+  //   { label: 'H1', style: 'header-one' },
+  { label: <FaListUl />, style: 'unordered-list-item', key: 'ul' },
+  { label: <FaListOl />, style: 'ordered-list-item', key: 'ol' },
+  { label: <FaQuoteLeft />, style: 'blockquote', key: 'qu' },
+  { label: 'H2', style: 'header-two', key: 'h2' },
+  { label: 'H3', style: 'header-three', key: 'h3' },
+  { label: 'H4', style: 'header-four', key: 'h4' },
+  //   { label: 'H5', style: 'header-five' },
+  //   { label: 'H6', style: 'header-six' },
+
+  //   { label: 'Code Block', style: 'code-block' },
+];
+const BlockStyleControls = (props) => {
+  const { editorState } = props;
+  const selection = editorState.getSelection();
+  const blockType = editorState
+    .getCurrentContent()
+    .getBlockForKey(selection.getStartKey())
+    .getType();
+
+  return (
+    <div className='flex  font-bold cursor-pointer  space-x-[20px]'>
+      {BLOCK_TYPES.map((type) => (
+        <StyleButton
+          key={type.key}
+          active={type.style === blockType}
+          label={type.label}
+          onToggle={props.onToggle}
+          style={type.style}
+        />
+      ))}
+    </div>
+  );
+};
+
+var INLINE_STYLES = [
+  ,
+  // { label: 'Monospace', style: 'CODE' },
+  {
+    label: 'bold',
+    style: 'BOLD',
+    icon: <FaBold />,
+  },
+  {
+    label: 'italic',
+    style: 'ITALIC',
+    icon: <FaItalic />,
+  },
+  {
+    label: 'Underline',
+    style: 'UNDERLINE',
+    icon: <FaUnderline />,
+  },
+];
+
+const InlineStyleControls = (props) => {
+  var currentStyle = props.editorState.getCurrentInlineStyle();
+  return (
+    <div className=' flex cursor-pointer space-x-[20px] '>
+      {INLINE_STYLES.map((type) => (
+        <StyleButton
+          key={type.label}
+          active={currentStyle.has(type.style)}
+          label={type.icon}
+          onToggle={props.onToggle}
+          style={type.style}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default ContentInputComponent;

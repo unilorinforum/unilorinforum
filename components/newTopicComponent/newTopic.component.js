@@ -3,9 +3,16 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Select from 'react-select';
 import axios from 'axios';
+import Link from 'next/link'
 
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
-const ContentInputComponent = dynamic(import('./contentInput.component'), {
+
+const ContentInputComponent = dynamic(import('./contentInput.Component'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
+const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
@@ -30,40 +37,42 @@ const adminCategories = [
 ];
 
 class NewTopicComponent extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
-      topicTitle: 'Your Title Here....',
-      articleDescription: '',
+      topicTitle: '',
+      topicContent: '',
       coverImage: '',
       isFetching: false,
       multiple: true,
-      category: [],
+      category: '',
       cover: false,
+      user_id: '',
     };
   }
+  componentDidMount() {
+    const savedCat = window.localStorage.getItem('UF_SAVED_CAT');
+    if (savedCat) this.setState({ category: JSON.parse(savedCat) });
 
-  handleArticleDescriptionChange = (editorState) => {
+    const savedTitle = window.localStorage.getItem('UF_TITLE_INPUT');
+    if (savedTitle) this.setState({ topicTitle: JSON.parse(savedTitle) });
+  }
+  handletopicContentChange = (editorState) => {
     this.setState({
-      articleDescription: editorState,
+      topicContent: editorState,
     });
-
-    //       this.saveContent(contentState);
-
-    //  this.setState({editorState});
   };
-  handleTopicTitleChanage = (event) => {
-    this.setState({ topicTitle: `${event.target.value}` });
 
-    //       this.saveContent(contentState);
-
-    //  this.setState({editorState});
+  handletopicTitleChange = (titleEditorState) => {
+    this.setState({
+      topicTitle: titleEditorState,
+    });
+    console.log(titleEditorState);
   };
+
   handleCategorySelect = (category) => {
-    this.setState({ category }, () =>
-      console.log(`Option selected:`, this.state.category)
-    );
+    this.setState({ category });
+    window.localStorage.setItem('UF_SAVED_CAT', JSON.stringify(category));
   };
 
   handleFormSubmit = async (e) => {
@@ -71,9 +80,10 @@ class NewTopicComponent extends Component {
 
     let payload = {
       title: this.state.topicTitle,
-      articleCategory: this.state.value,
-      articleDesc: this.state.articleDescription,
+      articleCategory: this.state.category.value,
+      topicContent: this.state.topicContent,
       coverImageUrl: this.state.coverImage,
+      user_id: '',
     };
 
     console.log('pacy:', payload);
@@ -123,14 +133,16 @@ class NewTopicComponent extends Component {
   };
 
   render() {
-     const { category, cover } = this.state;
+    const { category, cover } = this.state;
     return (
       <div>
         <div className='pt-2 items-center bg-gray-light'>
           <div className='flex items-center p-2 pt-0 justify-between '>
             <div className='flex items-center cursor-pointer space-x-3'>
               <span className=' md:text-3xl flex items-center text-center py-1 px-3 rounded-lg  text-[#ffff] bg-[#000000] '>
-                App
+                <Link href='/'>
+                  <a>App</a>
+                </Link>
               </span>
               <span className='text-xl font-bold'>Create Post</span>
             </div>
@@ -148,7 +160,7 @@ class NewTopicComponent extends Component {
                 <div className={`${cover ? 'block' : 'hidden'}`}>
                   <Image
                     // loader={myLoader}
-                    src={this.state.coverImage}
+                    src={'/'}
                     height={100}
                     width={300}
                     alt='man'
@@ -180,28 +192,25 @@ class NewTopicComponent extends Component {
                     Remove Cover
                   </button>
                 </div>
-                <div
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                  value={this.state.topicTitle}
-                  onChange={this.handleTopicTitleChanage}
-                  className='p-2 my-3 font-semibold text-2xl border-none editableDiv2'
-                  placeholder='Your Title Here..'
-                ></div>
+                <TitleInputComponent
+                  titleEditorState={this.state.titleEditorState}
+                  onChange={this.onChange}
+                  handletopicTitleChange={this.handletopicTitleChange}
+                />
                 <Select
                   value={category}
                   onChange={this.handleCategorySelect}
                   options={categories}
-                  className='w-[300px] z-10 '
+                  className='w-[300px] z-10 my-5 '
                   placeholder={'Select A Sutable Category'}
                 />
               </div>
+
               <ContentInputComponent
+                key={'dd'}
                 editorState={this.state.editorState}
                 onChange={this.onChange}
-                handleArticleDescriptionChange={
-                  this.handleArticleDescriptionChange
-                }
+                handletopicContentChange={this.handletopicContentChange}
               />
               <div className='flex cursor-pointer space-x-2'>
                 <div className='text-lg font-bold border-2 w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
@@ -222,9 +231,4 @@ class NewTopicComponent extends Component {
   }
 }
 
-
-
-
 export default NewTopicComponent;
-
-
