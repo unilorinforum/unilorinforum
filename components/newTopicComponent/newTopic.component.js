@@ -6,14 +6,13 @@ import axios from 'axios';
 import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
-// import ContentInputComponent from './contentInput.Component';
 import { wordCount, getLoggedInUser } from '../../functions';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
-const ContentInputComponent = dynamic(import('./contentInput.Component'), {
+const ContentInputComponent = dynamic(import('./contentInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
