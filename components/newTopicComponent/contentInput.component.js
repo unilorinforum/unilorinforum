@@ -51,20 +51,22 @@ class ContentInputComponent extends React.Component {
   };
 
   componentDidMount() {
-    const rawContent = window.localStorage.getItem('rawContent');
-    const savedContent = EditorState.createWithContent(
-      convertFromRaw(JSON.parse(rawContent))
-    );
-    if (rawContent) {
-      this.setState({ editorState: savedContent });
-    } else {
-      this.setState({ editorState: EditorState.createEmpty() });
+    const rawContent = window.localStorage.getItem('UF_TOPIC_CONTENT');
+    if (rawContent !== null) {
+      const savedContent = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(rawContent))
+      );
+      if (rawContent) {
+        this.setState({ editorState: savedContent });
+      } else {
+        this.setState({ editorState: EditorState.createEmpty() });
+      }
     }
   }
 
   saveContent = (content) => {
     const rawContent = convertToRaw(content);
-    window.localStorage.setItem('rawContent', JSON.stringify(rawContent));
+    window.localStorage.setItem('UF_TOPIC_CONTENT', JSON.stringify(rawContent));
   };
 
   // saveContent = (content) => {

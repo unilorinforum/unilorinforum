@@ -39,13 +39,15 @@ class TitleInputComponent extends React.Component {
 
   componentDidMount() {
     const rawContent = window.localStorage.getItem('UF_TITLE_INPUT');
-    const savedContent = EditorState.createWithContent(
-      convertFromRaw(JSON.parse(rawContent))
-    );
-    if (rawContent) {
-      this.setState({ titleEditorState: savedContent });
-    } else {
-      this.setState({ titleEditorState: EditorState.createEmpty() });
+    if (rawContent !== null) {
+      const savedContent = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(rawContent))
+      );
+      if (rawContent) {
+        this.setState({ titleEditorState: savedContent });
+      } else {
+        this.setState({ titleEditorState: EditorState.createEmpty() });
+      }
     }
   }
 
@@ -181,6 +183,5 @@ class TitleInputComponent extends React.Component {
     );
   }
 }
-
 
 export default TitleInputComponent;

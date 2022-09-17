@@ -6,16 +6,17 @@ import axios from 'axios';
 import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
-import ContentInputComponent from './contentInput.Component';
+// import ContentInputComponent from './contentInput.Component';
+import { wordCount, getLoggedInUser } from '../../functions';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
-// const ContentInputComponent = dynamic(import('./contentInput.Component'), {
-//   ssr: false,
-//   loading: () => <p>Loading...</p>,
-// });
+const ContentInputComponent = dynamic(import('./contentInput.Component'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const categories = [
   { value: 'Campus Gossip', label: 'Campus Gossip' },
@@ -45,9 +46,12 @@ class NewTopicComponent extends Component {
       coverImage: '',
       isFetching: false,
       multiple: true,
-      category: '',
+      category: 0,
       cover: false,
-      user_id: '',
+      user: {},
+      errmsg: '',
+      titleCount: 0,
+      contentCount: 0,
     };
   }
   componentDidMount() {
@@ -55,7 +59,14 @@ class NewTopicComponent extends Component {
     if (savedCat) this.setState({ category: JSON.parse(savedCat) });
 
     const savedTitle = window.localStorage.getItem('UF_TITLE_INPUT');
-    if (savedTitle) this.setState({ topicTitle: JSON.parse(savedTitle) });
+    if (savedTitle) {
+      this.setState({ topicTitle: JSON.parse(savedTitle) });
+    }
+    const loggedInUser = getLoggedInUser();
+    // console.log(loggedInUser);
+    if (loggedInUser !== null) {
+      this.setState({ user: loggedInUser });
+    }
   }
   handletopicContentChange = (editorState) => {
     this.setState({
@@ -67,6 +78,12 @@ class NewTopicComponent extends Component {
     this.setState({
       topicTitle: titleEditorState,
     });
+
+    const titleHtml = draftToHTML(this.state.topicTitle);
+    const titleCount = wordCount(titleHtml);
+    if (titleCount < 6) {
+      this.setState({ errmsg: 'Title Must Be More Than 6 Words' });
+    }
   };
 
   handleCategorySelect = (category) => {
@@ -76,28 +93,40 @@ class NewTopicComponent extends Component {
 
   handleFormSubmit = async (e) => {
     e.preventDefault();
-
     const titleHtml = draftToHTML(this.state.topicTitle);
-    console.log('html:', titleHtml);
+    console.log('title html', titleHtml);
+    const contetntHtml = draftToHTML(this.state.topicContent);
+    console.log('content html', contetntHtml);
+    console.log(this.state.topicContent);
 
-    const contentHtml = draftToHTML(this.state.topicContent);
-    console.log('html:', contentHtml);
+    const titleCount = wordCount(titleHtml);
+    console.log('title count', titleCount);
+    const contentCount = wordCount(contetntHtml);
+    console.log('content count', contentCount);
+    const cat = this.state.topicContent; //make states.
+
+    if (contentCount < 25) {
+      this.setState({ errmsg: 'Contetent Must Be More Than 25 Words' });
+    } else if (cat) {
+      this.setState({ errmsg: 'please kindly select a category' });
+    }
 
     let payload = {
       title: this.state.topicTitle,
       articleCategory: this.state.category.value,
       topicContent: this.state.topicContent,
       coverImageUrl: this.state.coverImage,
-      user_id: '',
+      user_id: this.state.user.user_id,
     };
 
-    console.log('pacy:', payload);
-    try {
-      const resp = await axios.post('/api/topics/create', payload);
-      console.log(resp.data);
-    } catch (error) {
-      console.log('error', error.respones);
-    }
+    console.log('payload:', payload);
+    console.log('err:', this.state.errmsg);
+    // try {
+    //   const resp = await axios.post('/api/topics/create', payload);
+    //   console.log(resp.data);
+    // } catch (error) {
+    //   console.log('error', error.respones);
+    // }
   };
   config = {
     headers: { 'content-type': 'multipart/form-data' },
