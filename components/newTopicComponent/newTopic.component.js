@@ -7,6 +7,7 @@ import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 import { wordCount, getLoggedInUser } from '../../functions';
+import Modal from '../modalComponent/modalComponent';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
@@ -51,6 +52,7 @@ class NewTopicComponent extends Component {
       errmsg: '',
       titleCount: 0,
       contentCount: 0,
+      isOpen: false,
     };
   }
   componentDidMount() {
@@ -136,6 +138,9 @@ class NewTopicComponent extends Component {
       );
     },
   };
+  onClose = () => {
+    this.setState({ isOpen: false });
+  };
 
   uploadhandler = (event) => {
     const image = event.target.files[0];
@@ -186,6 +191,20 @@ class NewTopicComponent extends Component {
             <button>x</button>
           </div>
         </div>
+        <button
+          // className={styles.primaryBtn}
+          onClick={() => {
+            this.setState({ isOpen: true });
+            console.log(this.state.isOpen);
+          }}
+        >
+          Open Modal
+        </button>
+        {this.state.isOpen ? (
+          <Modal IsOpen={this.state.isOpen} onClose={this.onClose} />
+        ) : (
+          ''
+        )}
         <div className='flex  min-h-screen bg-gray-light pt-2 justify-around  '>
           <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className='w-full'>
