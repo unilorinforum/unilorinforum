@@ -10,7 +10,7 @@ import {
 
 const style = {
   authorContainer: '',
-  authoImage: 'rounded-sm object-contain',
+  authImage: 'rounded-sm object-contain',
   cardTop: '',
   authorName: '',
   topIcons: '',
@@ -33,8 +33,10 @@ const TopicCardComponent = () => {
           src='/susan.jpg'
           alt='auh'
           width={40}
+          quality={100}
           height={40}
-          className={style.authoImage}
+          className={style.authImage}
+          objectFit='contain'
         />
       </div>
       <div className='font-MontserratBold  w-full'>
@@ -63,16 +65,14 @@ const TopicCardComponent = () => {
             <p className='topic-likes-count'>10k</p>
           </span>
         </div>
-        <div className='mt-1'>
+        <div className='mt-1 w-[313px] h-[136px]'>
           <Image
             src='/blood.jpg'
             alt='auh'
             width={313}
             height={136}
-            // objectFit='cover'
-            // layout='fill'
-            // quality={100}
-            className='rounded-xl '
+            className='rounded-xl object-cover'
+            priority
           />
         </div>
       </div>

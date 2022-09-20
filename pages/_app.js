@@ -1,14 +1,14 @@
 import BannerComponent from '../components/bannerComponent/banner.component';
 import BottomNavComponent from '../components/bottomNavComponent/bottomNav.component';
+import NewPostButtonComponent from '../components/commonComponents/newPostButton.component';
 import Header from '../components/headerComponent/header.component';
 import LeftSideBarComponent from '../components/sideBarComponent/leftSide.component';
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
 import { AuthProvider } from '../context/authProvider';
 
-
 import '../styles/globals.css';
 
-function MyApp({Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
   if (Component.getLayout) {
     return Component.getLayout(
       <AuthProvider>
@@ -28,6 +28,7 @@ function MyApp({Component, pageProps}) {
           <div>
             <Component {...pageProps} />
             <div className='flex justify-center items-center focus:'>
+              <NewPostButtonComponent />
               <BottomNavComponent />
             </div>
           </div>

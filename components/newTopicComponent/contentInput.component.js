@@ -177,7 +177,7 @@ class ContentInputComponent extends React.Component {
 
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
-    let className = 'RichEditor-editor min-h-[200px]';
+    let className = 'RichEditor-editor  min-h-[200px]';
     var contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
       if (contentState.getBlockMap().first().getType() !== 'unstyled') {
@@ -190,7 +190,7 @@ class ContentInputComponent extends React.Component {
     }
     return (
       <div>
-        <div className='text-xl font-normal  my-5 '>
+        <div className='text-xl font-normal z-0  my-5 '>
           <div className='flex px-2 bg-[#fdfafa] h-[50px]  space-x-[20px] items-center'>
             <InlineStyleControls
               editorState={editorState}

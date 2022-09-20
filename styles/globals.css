@@ -208,8 +208,9 @@ a {
 h1 {
   text-align: center;
 }
-
-
+.public-DraftStyleDefault-block {
+  z-index: -1;
+}
 .active-filter {
   background: var(--unnamed-color-002d72) !important;
   color: #ffffff;
@@ -220,6 +221,9 @@ h1 {
   margin: 1rem auto;
   padding: 0.5rem;
   border: 1px solid #999;
+}
+.mymodal {
+  z-index: 5000;
 }
 h2 {
   font-size: 30px;

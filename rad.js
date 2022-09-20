@@ -455,3 +455,56 @@ SignUp.getLayout = function pageLayout(page) {
     </>
   );
 };
+import styles from './modalStyles.module.css';
+import React, { useState, useEffect } from 'react';
+import { RiCloseLine } from 'react-icons/ri';
+import ReactDOM from 'react-dom';
+
+const Modal = ({ isOpen, onClose }) => {
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  const modalContent = !isOpen ? (
+    <div className='z-50 mymodal'>
+      <div className={styles.darkBG} onClick={onClose} />
+      <div className={styles.centered}>
+        <div className={styles.modal}>
+          <div className={styles.modalHeader}>
+            <h5 className={styles.heading}>Dialog</h5>
+          </div>
+          <button className={styles.closeBtn} onClick={onClose}>
+            <RiCloseLine style={{ marginBottom: '-3px' }} />
+          </button>
+          <div className={styles.modalContent}>
+            Are you sure you want to delete the item?
+          </div>
+          <div className={styles.modalActions}>
+            <div className={styles.actionsContainer}>
+              <button className={styles.deleteBtn} onClick={onClose}>
+                Delete
+              </button>
+              <button className={styles.cancelBtn} onClick={onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
+  if (isBrowser) {
+    console.log(modalContent);
+    return ReactDOM.createPortal(
+      modalContent,
+      document.getElementById('modal-root')
+    );
+  } else {
+    return null;
+  }
+};
+
+export default Modal;

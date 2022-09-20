@@ -7,7 +7,8 @@ import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 import { wordCount, getLoggedInUser } from '../../functions';
-import Modal from '../modalComponent/modalComponent';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
@@ -49,7 +50,7 @@ class NewTopicComponent extends Component {
       category: 0,
       cover: false,
       user: {},
-      errmsg: '',
+      errmsg: null,
       titleCount: 0,
       contentCount: 0,
       isOpen: false,
@@ -60,11 +61,11 @@ class NewTopicComponent extends Component {
     if (savedCat) this.setState({ category: JSON.parse(savedCat) });
 
     const savedTitle = window.localStorage.getItem('UF_TITLE_INPUT');
+
     if (savedTitle) {
       this.setState({ topicTitle: JSON.parse(savedTitle) });
     }
     const loggedInUser = getLoggedInUser();
-    // console.log(loggedInUser);
     if (loggedInUser !== null) {
       this.setState({ user: loggedInUser });
     }
@@ -73,6 +74,14 @@ class NewTopicComponent extends Component {
     this.setState({
       topicContent: editorState,
     });
+    const contentHtml = draftToHTML(editorState);
+    const contentCount = wordCount(contentHtml);
+    this.setState({ contentCount: contentCount });
+    // console.log(this.state.contentCount);
+
+    if (contentCount < 30) {
+      this.setState({ errmsg: 'Content is too short' });
+    }
   };
 
   handletopicTitleChange = (titleEditorState) => {
@@ -80,11 +89,10 @@ class NewTopicComponent extends Component {
       topicTitle: titleEditorState,
     });
 
-    const titleHtml = draftToHTML(this.state.topicTitle);
+    const titleHtml = draftToHTML(titleEditorState);
     const titleCount = wordCount(titleHtml);
-    if (titleCount < 6) {
-      this.setState({ errmsg: 'Title Must Be More Than 6 Words' });
-    }
+    this.setState({ titleCount: titleCount });
+    // console.log(this.state.titleCount);
   };
 
   handleCategorySelect = (category) => {
@@ -94,34 +102,34 @@ class NewTopicComponent extends Component {
 
   handleFormSubmit = async (e) => {
     e.preventDefault();
-    const titleHtml = draftToHTML(this.state.topicTitle);
-    console.log('title html', titleHtml);
-    const contetntHtml = draftToHTML(this.state.topicContent);
-    console.log('content html', contetntHtml);
-    console.log(this.state.topicContent);
+    console.log(this.state.errmsg);
+    if (this.state.titleCount < 6) {
+      this.setState({
+        errmsg: 'Title is to short, make your title discriptive',
+      });
+      this.showErrorMessage(this.state.errmsg);
+    } else if (this.state.contentCount < 6) {
+      this.setState({
+        errmsg: 'Your Content is too short',
+      });
+      this.showErrorMessage(this.state.errmsg);
+    } else if (this.state.category == 0) {
+      this.setState({
+        errmsg: 'Pls Select a category',
+      });
+      this.showErrorMessage(this.state.errmsg);
+    } else {
+      let payload = {
+        title: this.state.topicTitle,
+        articleCategory: this.state.category.value,
+        topicContent: this.state.topicContent,
+        coverImageUrl: this.state.coverImage,
+        user_id: this.state.user.user_id,
+      };
 
-    const titleCount = wordCount(titleHtml);
-    console.log('title count', titleCount);
-    const contentCount = wordCount(contetntHtml);
-    console.log('content count', contentCount);
-    const cat = this.state.topicContent; //make states.
-
-    if (contentCount < 25) {
-      this.setState({ errmsg: 'Contetent Must Be More Than 25 Words' });
-    } else if (cat) {
-      this.setState({ errmsg: 'please kindly select a category' });
+      console.log('payload:', payload);
     }
 
-    let payload = {
-      title: this.state.topicTitle,
-      articleCategory: this.state.category.value,
-      topicContent: this.state.topicContent,
-      coverImageUrl: this.state.coverImage,
-      user_id: this.state.user.user_id,
-    };
-
-    console.log('payload:', payload);
-    console.log('err:', this.state.errmsg);
     // try {
     //   const resp = await axios.post('/api/topics/create', payload);
     //   console.log(resp.data);
@@ -138,10 +146,11 @@ class NewTopicComponent extends Component {
       );
     },
   };
-  onClose = () => {
-    this.setState({ isOpen: false });
+  showErrorMessage = (message) => {
+    toast.error(message, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
   };
-
   uploadhandler = (event) => {
     const image = event.target.files[0];
     console.log(image.name);
@@ -174,6 +183,7 @@ class NewTopicComponent extends Component {
     const { category, cover } = this.state;
     return (
       <div>
+        <ToastContainer />
         <div className='pt-2 items-center bg-gray-light'>
           <div className='flex items-center p-2 pt-0 justify-between '>
             <div className='flex items-center cursor-pointer space-x-3'>
@@ -191,20 +201,7 @@ class NewTopicComponent extends Component {
             <button>x</button>
           </div>
         </div>
-        <button
-          // className={styles.primaryBtn}
-          onClick={() => {
-            this.setState({ isOpen: true });
-            console.log(this.state.isOpen);
-          }}
-        >
-          Open Modal
-        </button>
-        {this.state.isOpen ? (
-          <Modal IsOpen={this.state.isOpen} onClose={this.onClose} />
-        ) : (
-          ''
-        )}
+
         <div className='flex  min-h-screen bg-gray-light pt-2 justify-around  '>
           <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className='w-full'>
@@ -253,17 +250,16 @@ class NewTopicComponent extends Component {
                   value={category}
                   onChange={this.handleCategorySelect}
                   options={categories}
-                  className='w-[300px] z-10 my-5 '
+                  className='w-[300px] z-10  my-5 '
                   placeholder={'Select A Sutable Category'}
                 />
+                <ContentInputComponent
+                  key={'dd'}
+                  editorState={this.state.editorState}
+                  onChange={this.onChange}
+                  handletopicContentChange={this.handletopicContentChange}
+                />
               </div>
-
-              <ContentInputComponent
-                key={'dd'}
-                editorState={this.state.editorState}
-                onChange={this.onChange}
-                handletopicContentChange={this.handletopicContentChange}
-              />
               <div className='flex cursor-pointer space-x-2'>
                 <div className='text-lg font-bold border-2 w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
                   <input type='submit' value='Publish' />
