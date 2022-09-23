@@ -6,9 +6,11 @@ import axios from 'axios';
 import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
-import { wordCount, getLoggedInUser } from '../../functions';
+import { wordCount, getLoggedInUser, getSavedTitle } from '../../functions';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDropzone } from 'react-dropzone';
+import { adminCategories, categories } from '../../common/categories';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
@@ -18,25 +20,6 @@ const ContentInputComponent = dynamic(import('./contentInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
-
-const categories = [
-  { value: 'Campus Gossip', label: 'Campus Gossip' },
-  { value: 'Campus Event', label: 'Campus Event' },
-  { value: 'Campus Gist', label: 'Campus Gist' },
-  { value: 'Campus Tips', label: 'Campus Tips' },
-  { value: 'Campus Stories', label: 'Campus Stories' },
-];
-const adminCategories = [
-  { value: 'Campus Gossip', label: 'Campus Gossip' },
-  { value: 'Campus Event', label: 'Campus Event' },
-  { value: 'Campus Gist', label: 'Campus Gist' },
-  { value: 'Campus Tips', label: 'Campus Tips' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'Campus Stories', label: 'Campus Stories' },
-  { value: 'News', label: 'News' },
-  { value: 'Annoucement', label: 'Annoucement' },
-  { value: 'Sponsored', label: 'Sponsored' },
-];
 
 class NewTopicComponent extends Component {
   constructor(props) {
@@ -56,20 +39,23 @@ class NewTopicComponent extends Component {
       isOpen: false,
     };
   }
+
   componentDidMount() {
     const savedCat = window.localStorage.getItem('UF_SAVED_CAT');
     if (savedCat) this.setState({ category: JSON.parse(savedCat) });
-
-    const savedTitle = window.localStorage.getItem('UF_TITLE_INPUT');
-
-    if (savedTitle) {
-      this.setState({ topicTitle: JSON.parse(savedTitle) });
-    }
     const loggedInUser = getLoggedInUser();
     if (loggedInUser !== null) {
       this.setState({ user: loggedInUser });
     }
+
+    console.log(this.state.user);
   }
+  // componentWillMount() {
+  //   const rawContent = JSON.parse(localStorage.getItem('UF_TITLE_INPUT'));
+  //   if (rawContent !== null) {
+  //     this.setState({ topicTitle: draftToHTML(rawContent) });
+  //   }
+  // }
   handletopicContentChange = (editorState) => {
     this.setState({
       topicContent: editorState,
@@ -77,13 +63,17 @@ class NewTopicComponent extends Component {
     const contentHtml = draftToHTML(editorState);
     const contentCount = wordCount(contentHtml);
     this.setState({ contentCount: contentCount });
-    // console.log(this.state.contentCount);
 
     if (contentCount < 30) {
       this.setState({ errmsg: 'Content is too short' });
     }
   };
-
+  handleTitleChange = (e) => {
+    this.setState({
+      topicTitle: e.target.value,
+    });
+    console.log(this.state.topicTitle);
+  };
   handletopicTitleChange = (titleEditorState) => {
     this.setState({
       topicTitle: titleEditorState,
@@ -102,8 +92,7 @@ class NewTopicComponent extends Component {
 
   handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(this.state.errmsg);
-    if (this.state.titleCount < 6) {
+    if (this.state.titleCount < 4) {
       this.setState({
         errmsg: 'Title is to short, make your title discriptive',
       });
@@ -119,24 +108,28 @@ class NewTopicComponent extends Component {
       });
       this.showErrorMessage(this.state.errmsg);
     } else {
+      const titleHtml = draftToHTML(this.state.topicTitle);
+      const contentHtml = draftToHTML(this.state.topicContent);
       let payload = {
-        title: this.state.topicTitle,
+        title: titleHtml,
         articleCategory: this.state.category.value,
-        topicContent: this.state.topicContent,
+        topicContent: contentHtml,
         coverImageUrl: this.state.coverImage,
         user_id: this.state.user.user_id,
+        author: this.state.user.username,
       };
 
       console.log('payload:', payload);
-    }
 
-    // try {
-    //   const resp = await axios.post('/api/topics/create', payload);
-    //   console.log(resp.data);
-    // } catch (error) {
-    //   console.log('error', error.respones);
-    // }
+      try {
+        const respones = await axios.post('/api/topics/create', payload);
+        console.log(respones.data);
+      } catch (error) {
+        console.log('error', error.respones);
+      }
+    }
   };
+
   config = {
     headers: { 'content-type': 'multipart/form-data' },
     onUploadProgress: (event) => {
@@ -245,7 +238,14 @@ class NewTopicComponent extends Component {
                   titleEditorState={this.state.titleEditorState}
                   onChange={this.onChange}
                   handletopicTitleChange={this.handletopicTitleChange}
+                  wordCount={this.state.titleCount}
                 />
+                {/* <input
+                  placeholder='Your Title here'
+                  onChange={this.handleTitleChange}
+                  className=' min-h-[50px] w-[200px] font-bold text-3xl border-0 px-2 '
+                  type='text'
+                /> */}
                 <Select
                   value={category}
                   onChange={this.handleCategorySelect}
@@ -258,6 +258,7 @@ class NewTopicComponent extends Component {
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   handletopicContentChange={this.handletopicContentChange}
+                  contentHtml={this.state.contentHtml}
                 />
               </div>
               <div className='flex cursor-pointer space-x-2'>

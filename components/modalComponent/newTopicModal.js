@@ -3,7 +3,6 @@ import React from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { ReactDOM } from 'react';
 import { AiFillWarning } from 'react-icons/ai';
-
 const NewTopicModal = ({ isOpen, onClose, message }) => {
   // if (!isOpen) return null;
   return (

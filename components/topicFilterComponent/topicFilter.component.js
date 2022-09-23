@@ -1,13 +1,15 @@
 import React from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { HiTrendingUp } from 'react-icons/hi';
 
- 
+import { adminCategories } from '../../common/categories';
 
 const TopicFilterComponent = () => {
-  const router = useRouter()
-  const className= "topic-filter-items rounded-full  cursor-pointer  py-1 whitespace-nowrap flex flex-wrap px-4 text-[#002D72] font-bold  bg-[#CED5E0] " 
-  
+  const router = useRouter();
+  const className =
+    'topic-filter-items rounded-full  cursor-pointer  py-1 whitespace-nowrap flex flex-wrap px-4 text-[#002D72] font-bold  bg-[#CED5E0] ';
+
   return (
     <div className='border-b bg-[#ffffff] pl-3 py-3 mt-0  flex no-scrollbar overflow-x-auto w-screen max-w-[800px] space-x-4 '>
       <span
@@ -28,60 +30,39 @@ const TopicFilterComponent = () => {
           <a>Latest</a>
         </Link>
       </span>
-      <span
-        className={`${className} ${
-          router.asPath == '/feed/gossip' ? 'active-filter' : ''
-        } `}
-      >
-        <Link href={`/feed/gossip`}>
-          <a>Gossip</a>
-        </Link>
-      </span>
+
       <span
         className={`${className} ${
           router.asPath == '/feed/trending' ? 'active-filter' : ''
         } `}
       >
-        <Link href={`/feed/trending`}>
-          <a>Trending</a>
-        </Link>
+        <div className='flex space-x-1 items-center'>
+          <Link href={`/feed/trending`}>
+            <a>Trending</a>
+          </Link>
+          <div className='text-xl'>
+            <HiTrendingUp />
+          </div>
+        </div>
       </span>
-      <span
-        className={`${className} ${
-          router.asPath == '/feed/story' ? 'active-filter' : ''
-        } `}
-      >
-        <Link href={`/feed/story`}>
-          <a>Story</a>
-        </Link>
-      </span>
-      <span
-        className={`${className} ${
-          router.asPath == '/feed/news' ? 'active-filter' : ''
-        } `}
-      >
-        <Link href={`/feed/news`}>
-          <a>Just In</a>
-        </Link>
-      </span>
-      <span
-        className={`${className} ${
-          router.asPath == '/feed/materials' ? 'active-filter' : ''
-        } `}
-      >
-        <Link href={`/feed/materials`}>
-          <a>Materias</a>
-        </Link>
-      </span>
-      <span
-        className={`${className} ${
-          router.asPath == '/feed/Voting' ? 'active-filter' : ''
-        } `}
-      >
-        <Link href={`/feed/voting`}>
-          <a>Voting</a>
-        </Link>
-      </span>
+      {adminCategories.map((cat) => {
+        return (
+          <div key={cat.label}>
+            <span
+              className={`${className} ${
+                router.asPath == `/feed/${cat.value}` ? 'active-filter' : ''
+              } `}
+            >
+              <div className='flex space-x-1 items-center'>
+                <Link href={`/feed/${cat.value}`}>
+                  <a>{cat.label}</a>
+                </Link>
+                <div className='text-xl'>{cat.icon}</div>
+              </div>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };

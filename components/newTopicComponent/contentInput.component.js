@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'draft-js/dist/Draft.css';
+import draftToHTML from 'draftjs-to-html';
 import {
   Editor,
   EditorState,
@@ -51,10 +52,12 @@ class ContentInputComponent extends React.Component {
   };
 
   componentDidMount() {
-    const rawContent = window.localStorage.getItem('UF_TOPIC_CONTENT');
+    const rawContent = JSON.parse(
+      window.localStorage.getItem('UF_TOPIC_CONTENT')
+    );
     if (rawContent !== null) {
       const savedContent = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(rawContent))
+        convertFromRaw(rawContent)
       );
       if (rawContent) {
         this.setState({ editorState: savedContent });

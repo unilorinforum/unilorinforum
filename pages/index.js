@@ -1,21 +1,27 @@
 import Head from 'next/head';
-import Homepage from './homepage';
+import axios from 'axios';
+import FeedComponent from '../components/feedComponent/feed.component';
 
-
-
-export default function Home() {
+export default function Home({ topics }) {
   return (
     <div>
-      <Head>
-        
-      </Head>
+      <Head></Head>
 
       <main className=''>
-        <Homepage />
+        <FeedComponent key={topics.topic_id} topics={topics} />
       </main>
 
-      <footer >
-      </footer>
+      <footer></footer>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const response = await axios(`${process.env.API_PATH}/api/topics`);
+
+  return {
+    props: {
+      topics: response.data,
+    },
+  };
 }

@@ -11,6 +11,7 @@ const getAllUsers = async (req, res, next) => {
     let allUsers = await executeQuery('SELECT * FROM users');
     res.send(allUsers);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -18,15 +19,17 @@ const getAllUsers = async (req, res, next) => {
 // get user by id
 const getUserById = async (req, res, next) => {
   let id = req.query.id;
-  console.log(id);
   try {
     const userData = await executeQuery(
-      `SELECT * FROM USERS WHERE user_id=${id}`
+      `SELECT * FROM USERS WHERE user_id="${id}"`
     );
-    if (userData > 0) res.status(200).json(userData);
-
-    next(new ErrorHandler(`no user found with this id ${id} `, 404));
+    if (userData.length > 0) {
+      res.send(userData[0]);
+    }
+    // res.send('hahah');
+    // next(new ErrorHandler(`no user found with this id ${id} `, 404));
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -51,9 +54,8 @@ const deleteUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   const body = req.body;
-  const date = moment().format();
+  const date = Date.now();
   const salt = genSaltSync(10);
-
 
   try {
     let emailResult = await executeQuery(
@@ -96,7 +98,6 @@ const createUser = async (req, res) => {
           });
         }
       }
-
     }
   } catch (err) {
     console.log(err);
@@ -155,7 +156,6 @@ const userLogin = async (req, res) => {
 };
 
 const logout = (req, res) => {
-
   try {
     setCookie('UNILORINFORUM_JWT', null, {
       req,
@@ -169,14 +169,10 @@ const logout = (req, res) => {
       success: 1,
       message: 'logged out successfully',
     });
-    
   } catch (error) {
     console.log(error);
-    
   }
-   
-
-}
+};
 export {
   createUser,
   getAllUsers,
