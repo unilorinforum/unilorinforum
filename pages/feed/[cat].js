@@ -22,7 +22,7 @@ const Feed = ({ topics }) => {
 export default Feed;
 
 export async function getServerSideProps(context) {
-  const response = await axios(
+  const response = await fetch(
     `${process.env.API_PATH}/api/topics/category/${context.params.cat}`
   );
 
