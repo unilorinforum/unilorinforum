@@ -15,7 +15,7 @@ const FeedComponent = ({ topics }) => {
         {topics.map((topic) => {
           return (
             <div key={topic.topic_id}>
-              <TopicCardComponent key={topic.id} topic={topic} />
+              <TopicCardComponent topic={topic} />
             </div>
           );
         })}

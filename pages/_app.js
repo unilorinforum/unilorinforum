@@ -5,6 +5,7 @@ import Header from '../components/headerComponent/header.component';
 import LeftSideBarComponent from '../components/sideBarComponent/leftSide.component';
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
 import { AuthProvider } from '../context/authProvider';
+import '../config/axios';
 
 import '../styles/globals.css';
 

@@ -4,12 +4,13 @@ import axios from 'axios';
 import TopicCardComponent from '../../components/topicCardComponent/topicCard.component';
 import TopicFilterComponent from '../../components/topicFilterComponent/topicFilter.component';
 import FeedComponent from '../../components/feedComponent/feed.component';
+import NoTopicFoundComponent from '../../components/topicCardComponent/noTopicFound.component';
 
 const Feed = ({ topics }) => {
   const router = useRouter();
   const cat = router.query.cat;
-  if (!topics) {
-    return '404';
+  if (topics.success == 0) {
+    return <NoTopicFoundComponent message={topics.message} />;
   } else {
     return (
       <div>
@@ -22,13 +23,12 @@ const Feed = ({ topics }) => {
 export default Feed;
 
 export async function getServerSideProps(context) {
-  const response = await axios(
-    `https://unilorinforum.vercel.app/api/topics/category/${context.params.cat}`
-  );
+  const response = await axios(`/topics/category/${context.params.cat}`);
+  console.log('data', response.data.topics);
 
   return {
     props: {
-      topics: response.data,
+      topics: response.data.topics,
       // userData: userResponse.data,
     },
   };

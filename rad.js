@@ -508,3 +508,11 @@ const Modal = ({ isOpen, onClose }) => {
 };
 
 export default Modal;
+
+
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET
+GOOGLE_CLIENT_ID=15390701721-eodme1j87g1o4slpkg7sgvudtm70khe1.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+NEXTAUTH_URL=http://localhost:3000
+JWT_SECRET=f56d6e6b49290eba8a2d5b74e5c241bb

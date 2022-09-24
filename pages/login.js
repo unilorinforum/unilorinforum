@@ -30,7 +30,7 @@ export default function Login() {
 
   useEffect(() => {
     if (auth.user_id) {
-      Router.back()
+      Router.back();
     }
   }, [auth]);
 
@@ -47,12 +47,12 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const endPoint = '/api/users/login';
-      const response = await axios.post(endPoint, JSON.stringify(data), {
+      const response = await axios.post(`/users/login`, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
         withCredentials: true,
       });
       // set user data
+      console.log(response);
       setErrMsg(response.data.message);
 
       //redirect user after sucessfull login
@@ -65,7 +65,7 @@ export default function Login() {
           email: email,
           username: username,
         };
-        
+
         setCookie('FORUM_LOGIN_DATA', JSON.stringify(userData), {
           maxAge: 60 * 60 * 24 * 90, //90 days
           path: '/',

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import axios from 'axios';
-import Router from 'next/router'
+import Router from 'next/router';
 import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
 // import FormInput from '../components/formInputComponent/forminput.component';
@@ -45,14 +45,14 @@ export default function SignUp() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
-    const data = {username, email, password, passwordConfirm };
+    const data = { username, email, password, passwordConfirm };
     console.log(data, 'ooo');
 
     try {
-      const endPoint = '/api/users/register';
+      const endPoint = '/users/register';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
-        // withCredentials: true,
+        withCredentials: true,
       });
       console.log(JSON.stringify(response));
       setErrMsg(response.data.message);
@@ -60,9 +60,8 @@ export default function SignUp() {
       if (response.data.success == 1) {
         // console.log(response.data.success);
         setTimeout(() => {
-          Router.push('/login')
+          Router.push('/login');
         }, 5000);
-        
       }
     } catch (error) {}
   };

@@ -13,12 +13,12 @@ const Feed = ({ topics }) => {
 
 export default Feed;
 export async function getServerSideProps() {
-  const response = await axios(`${process.env.API_PATH}/api/topics`);
-  
+  const response = await axios(`/topics`);
+  // console.log(response.data.topics);
 
   return {
     props: {
-      topics: response.data,
+      topics: response.data.topics,
     },
   };
 }

@@ -28,10 +28,10 @@ class NewTopicComponent extends Component {
       topicTitle: '',
       topicContent: '',
       coverImage: '',
+      coverImageUrl: '',
       isFetching: false,
       multiple: true,
       category: 0,
-      cover: false,
       user: {},
       errmsg: null,
       titleCount: 0,
@@ -144,36 +144,38 @@ class NewTopicComponent extends Component {
       position: toast.POSITION.TOP_RIGHT,
     });
   };
-  uploadhandler = (event) => {
+  uploadhandler = async (event) => {
     const image = event.target.files[0];
-    console.log(image.name);
+    console.log(image);
     image.isUploading = true;
-    // this.setState({
-    //   coverImage: image.name,
-    // });
+    this.setState({
+      coverImage: URL.createObjectURL(image),
+    });
     const removeImage = () => {
-      console.log('removed');
-    };
-    const formData = new FormData();
-    formData.append('image', image, image.name);
-    const response = axios
-      .post('/api/uploads/imageupload', formData)
-      .then((res) => {
-        image.isUploading = false;
-        console.log(res);
-        // this.setState({
-        //   coverImage: `hhh`,
-        //   cover: true,
-        // });
-      })
-      .catch((error) => {
-        console.log(error);
-        removeImage(image.name);
+      this.setState({
+        coverImage: false,
       });
+    };
+
+    try {
+      const formData = new FormData();
+
+      formData.append('image', image, image.name);
+      const response = await axios.post('/api/uploads/imageupload', formData);
+      image.isUploading = false;
+      console.log('response', response);
+      this.setState({
+        coverImageUrl: `hhh`,
+        cover: true,
+      });
+    } catch (error) {
+      console.log(error);
+      removeImage();
+    }
   };
 
   render() {
-    const { category, cover } = this.state;
+    const { category, coverImage } = this.state;
     return (
       <div>
         <ToastContainer />
@@ -199,40 +201,47 @@ class NewTopicComponent extends Component {
           <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className='w-full'>
               <div className='flex flex-col w-full '>
-                <div className={`${cover ? 'block' : 'hidden'}`}>
+                <div className={`${coverImage ? 'block' : 'hidden'}`}>
                   <Image
-                    // loader={myLoader}
-                    src={'/'}
+                    src={this.state.coverImage}
                     height={100}
                     width={300}
-                    alt='man'
-                    className='object-contain'
+                    alt='cover'
+                    className='object-cover rounded-md'
                   />
                 </div>
                 <div
-                  className={` relative p-1 w-[200px] justify-center  items-center text-center border rounded-md mt-2  ${
-                    cover ? 'hidden' : 'block'
+                  className={` relative p-1 w-[200px] justify-center text-center border rounded-md items-center mt-2  ${
+                    coverImage ? 'hidden' : 'block'
                   }`}
                 >
                   <input
-                    className='opacity-0 cursor-pointer input-btn  relative '
+                    className='opacity-0 z-10 cursor-pointer input-btn  relative '
                     type='file'
                     name='file'
+                    accept='image/*'
                     onChange={this.uploadhandler}
                   />
-                  <span className=' font-semibold cursor-pointer  absolute cover-btn w-1/1 top-0 left-0'>
-                    {' '}
+                  <span className=' mx-4 my-2 font-semibold cursor-pointer  absolute cover-btn max-w-1/1 top-0 left-0'>
                     Add a cover image
                   </span>
                 </div>
                 <div
                   className={` relative p-1 w-[200px] justify-center  items-center text-center border-2 border-rose-500 rounded-md mt-2  ${
-                    cover ? 'block' : 'hidden'
+                    coverImage ? 'block' : 'hidden'
                   }`}
                 >
-                  <button className=' font-bold cursor-pointer cover-btn text-[#ff0000]'>
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault;
+                      this.setState({
+                        coverImage: '',
+                      });
+                    }}
+                    className=' font-bold cursor-pointer cover-btn text-[#ff0000]'
+                  >
                     Remove Cover
-                  </button>
+                  </div>
                 </div>
                 <TitleInputComponent
                   titleEditorState={this.state.titleEditorState}
@@ -240,12 +249,6 @@ class NewTopicComponent extends Component {
                   handletopicTitleChange={this.handletopicTitleChange}
                   wordCount={this.state.titleCount}
                 />
-                {/* <input
-                  placeholder='Your Title here'
-                  onChange={this.handleTitleChange}
-                  className=' min-h-[50px] w-[200px] font-bold text-3xl border-0 px-2 '
-                  type='text'
-                /> */}
                 <Select
                   value={category}
                   onChange={this.handleCategorySelect}

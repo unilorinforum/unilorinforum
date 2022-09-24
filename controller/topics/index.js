@@ -58,7 +58,11 @@ const getTopicByCat = async (req, res) => {
     if (topicData.length > 0) {
       res.status(200).json(topicData);
     } else {
-      next(new ErrorHandler(`no user found with this id ${id} `, 404));
+      res.send({
+        success: 0,
+        message: 'No Post found or invalid cat ',
+      });
+      // next(new ErrorHandler(`no user found with this id ${id} `, 404));
     }
   } catch (err) {
     res.status(500).json(err);
