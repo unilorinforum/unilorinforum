@@ -3,7 +3,11 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['sangw.in', 'localhost', 'picsum.photos'], // <== Domain name
+    domains: [
+      'blooming-temple-53462.herokuapp.com',
+      'localhost',
+      'herokuapp.com',
+    ], // <== Domain name
   },
   swcMinify: true,
   webpack: true,
