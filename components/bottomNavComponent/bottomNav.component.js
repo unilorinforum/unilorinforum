@@ -7,12 +7,11 @@ import NewPostButtonComponent from '../commonComponents/newPostButton.component'
 
 const BottomNavComponent = () => {
   return (
-    <div>
-      <div>
+    <div className=''>
+      <div className=' flex bottom-[72px] z-50 right-4 absolute justify-end items-end '>
         <NewPostButtonComponent />
       </div>
-
-      <div className=' w-11/12 mobile-nav bottom-0 fixed  z-50 md:hidden flex  items-center justify-around mx-4'>
+      <div className=' w-11/12 mobile-nav  fixed  z-50 md:hidden flex  items-center justify-around mx-4'>
         <div className='focus:border relative'>
           <Link href=''>
             <a>
@@ -40,3 +39,8 @@ const BottomNavComponent = () => {
 };
 
 export default BottomNavComponent;
+//:@/heroku_317df6cc72767b9?reconnect=true
+
+// mysql: username = bd939e68fed79d;
+// password = 3747cfb6
+// host = us-cdbr-east-06.cleardb.net

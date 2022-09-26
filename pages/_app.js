@@ -25,10 +25,9 @@ function MyApp({ Component, pageProps }) {
           <BannerComponent />
         </div>
         <div className='flex'>
-          {/* <RightSideBarComponent /> */}
           <div>
             <Component {...pageProps} />
-            <div className=''>
+            <div>
               <BottomNavComponent />
             </div>
           </div>
