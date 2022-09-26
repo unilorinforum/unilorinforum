@@ -83,7 +83,7 @@ const TopicCardComponent = ({ topic }) => {
           {topic.cover_Image_url ? (
             <div className='mt-1 w-[313px] h-[136px]'>
               <Image
-                src='/public/blood.jpg'
+                src={`${topic.cover_Image_url}`}
                 alt='auh'
                 width={313}
                 height={136}
