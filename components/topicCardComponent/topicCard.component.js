@@ -22,14 +22,14 @@ const style = {
 };
 const TopicCardComponent = ({ topic }) => {
   const [authorData, setAuthorData] = useState({});
-  // console.log(topic.user_id);
+  console.log(topic);
 
   const except = topic.content
     .replace(/^"(.*)"$/, '$1')
     .replace(/(<([^>]+)>)/gi, '');
   const contentExcept = trimContent(except, 80);
 
-  const title = topic.title;
+  const title = trimContent(topic.title, 80);
 
   useEffect(() => {
     const getAuthorData = async () => {
@@ -68,7 +68,7 @@ const TopicCardComponent = ({ topic }) => {
         <div className=' items-cente mb-2 w- '>
           <h2 className='text-xl font-MEB font-bold topic-card-title'>
             <Link href={'/#'}>
-              <a>{title}</a>
+              <a>{title}...</a>
             </Link>
           </h2>
         </div>
@@ -80,6 +80,9 @@ const TopicCardComponent = ({ topic }) => {
             <BsFillSuitHeartFill className='text-[#FFAD40AB]' />
             <p className='topic-likes-count'>10k</p>
           </span>
+        </div>
+        <div>
+          {' '}
           {topic.cover_Image_url ? (
             <div className='mt-1 w-[313px] h-[136px]'>
               <Image
