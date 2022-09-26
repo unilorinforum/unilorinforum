@@ -1,4 +1,4 @@
 import axios from 'axios';
 
 axios.defaults.headers.common['accept'] = 'application/json';
-axios.defaults.baseURL = 'https://blooming-temple-53462.herokuapp.com';
+axios.defaults.baseURL = 'http://localhost:4000/api';

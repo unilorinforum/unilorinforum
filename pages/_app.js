@@ -28,8 +28,7 @@ function MyApp({ Component, pageProps }) {
           {/* <RightSideBarComponent /> */}
           <div>
             <Component {...pageProps} />
-            <div className='flex justify-center items-center focus:'>
-              <NewPostButtonComponent />
+            <div className=''>
               <BottomNavComponent />
             </div>
           </div>

@@ -161,7 +161,7 @@ class NewTopicComponent extends Component {
       const formData = new FormData();
 
       formData.append('image', image, image.name);
-      const response = await axios.post('/api/uploads/imageupload', formData);
+      const response = await axios.post('/images/cover-upload', formData);
       image.isUploading = false;
       console.log('response', response);
       this.setState({

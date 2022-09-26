@@ -47,10 +47,14 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(`/users/login`, JSON.stringify(data), {
-        headers: { 'content-Type': 'application/json' },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `/api/users/login`,
+        JSON.stringify(data),
+        {
+          headers: { 'content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
       // set user data
       console.log(response);
       setErrMsg(response.data.message);

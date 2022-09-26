@@ -19,7 +19,7 @@ export default function Home({ topics }) {
 
 export async function getServerSideProps() {
   const response = await axios(`/topics`);
-  // console.log(response.data.topics);
+  console.log(response.data.topics);
 
   return {
     props: {

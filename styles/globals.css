@@ -358,7 +358,7 @@ p {
     height: 136px;
     background: transparent 0% 0% no-repeat padding-box;
     border-radius: 15px;
-    opacity: 1;
+    opacity: 1; 
   }
   .mobile-nav {
     height: 65px;

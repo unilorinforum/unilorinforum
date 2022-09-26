@@ -31,18 +31,18 @@ const getSavedTitle = () => {
   return null;
 };
 
-// const slugify = (str) => {
-//   const regex = /(<([^>]+)>)/gi;
-//   return str
-//     .toLowerCase()
-//     .replace(regex, '')
-//     .replace(/[^\w\s-]/g, '')
-//     .replace(/[\s_-]+/g, '-')
-//     .replace(/^-+|-+$/g, '')
-//     .replace(/^(&nbsp;|<br>)+/, '')
-//     .replace(/^(nbsp)+/, '')
-//     .trim();
-// };
+const slugify = (str) => {
+  const regex = /(<([^>]+)>)/gi;
+  return str
+    .toLowerCase()
+    .replace(regex, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/^(&nbsp;|<br>)+/, '')
+    .replace(/^(nbsp)+/, '')
+    .trim();
+};
 function stripHtml(text) {
   return text.replace(/^\xa0*([^\xa0])\xa0$/g, '');
 }
