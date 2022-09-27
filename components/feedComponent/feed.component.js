@@ -11,7 +11,7 @@ const FeedComponent = ({ topics }) => {
         <TopicFilterComponent />
       </div>
 
-      <div className=' grid grid-cols-1 md:grid-cols-2 content-center justify-items-center '>
+      <div className=' grid grid-cols-1  md:grid-cols-2 content-center justify-items-center '>
         {topics.map((topic) => {
           return (
             <div key={topic.topic_id}>

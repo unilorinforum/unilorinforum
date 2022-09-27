@@ -126,10 +126,20 @@ class NewTopicComponent extends Component {
     console.log('payload:', payload);
 
     try {
-      const respones = await axios.post('/topics/create', payload);
-      console.log(respones.data);
+      const response = await axios.post('/topics/create', payload);
+      console.log(response.data);
+      if (response.data.success == 0){
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+       if (response.data.success == 1) {
+         toast.success(response.data.message, {
+           position: toast.POSITION.TOP_RIGHT,
+         });
+       }
     } catch (error) {
-      console.log('error', error.respones);
+      console.log('error', error.message);
     }
   };
 

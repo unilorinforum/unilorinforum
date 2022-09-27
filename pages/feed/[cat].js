@@ -10,21 +10,20 @@ const Feed = ({ topics }) => {
   const router = useRouter();
   const cat = router.query.cat;
   if (topics.success == 0) {
-    return <NoTopicFoundComponent message={topics.message} />;
+    return <NoTopicFoundComponent message={topics.message} />
   } else {
     return (
-      <div>
+      <div className='pb-[68px]'>
         <FeedComponent key={topics.topic_id} topics={topics} />
       </div>
     );
   }
 };
-
 export default Feed;
 
 export async function getServerSideProps(context) {
   const response = await axios(`/topics/category/${context.params.cat}`);
-  console.log('data', response.data.topics);
+  // console.log('data', response.data.topics);
 
   return {
     props: {

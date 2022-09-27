@@ -7,7 +7,7 @@ export default function Home({ topics }) {
     <div>
       <Head></Head>
 
-      <main className=''>
+      <main className=' pb-[68px]'>
         <div></div>
         <FeedComponent key={topics.topic_id} topics={topics} />
       </main>
@@ -19,7 +19,7 @@ export default function Home({ topics }) {
 
 export async function getServerSideProps() {
   const response = await axios(`/topics`);
-  console.log(response.data.topics);
+  // console.log(response.data.topics);
 
   return {
     props: {

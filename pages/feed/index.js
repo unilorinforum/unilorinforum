@@ -5,7 +5,7 @@ import { trimContent, getUserInfo } from '../../functions';
 
 const Feed = ({ topics }) => {
   return (
-    <div>
+    <div className='pb-[68px]'>
       <FeedComponent key={topics.topic_id} topics={topics} />
     </div>
   );
