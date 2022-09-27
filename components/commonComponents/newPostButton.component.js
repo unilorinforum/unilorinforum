@@ -3,7 +3,7 @@ import { BsPlusCircle } from 'react-icons/bs';
 
 const NewPostButtonComponent = () => {
   return (
-    <div className='text-5xl  '>
+    <div className='text-3xl  '>
       <BsPlusCircle />
     </div>
   );
