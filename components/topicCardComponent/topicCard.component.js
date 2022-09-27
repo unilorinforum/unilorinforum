@@ -22,7 +22,7 @@ const style = {
 };
 const TopicCardComponent = ({ topic }) => {
   const [authorData, setAuthorData] = useState({});
-  console.log(topic);
+  // console.log(topic);
 
   const except = topic.content
     .replace(/^"(.*)"$/, '$1')
@@ -34,14 +34,14 @@ const TopicCardComponent = ({ topic }) => {
   useEffect(() => {
     const getAuthorData = async () => {
       const AuthorInfo = await axios(`/users/${topic.user_id}`);
-      console.log('author info', AuthorInfo.data.user);
+      // console.log('author info', AuthorInfo.data.user);
       setAuthorData(AuthorInfo.data.user);
     };
     getAuthorData();
   }, [topic.user_id]);
 
   return (
-    <div className='topic-card text-[#002D72] max-w-[393px]  my-0 p-2 border-b-[0.20000000298023224px]  m-2  justify-between flex'>
+    <div className='topic-card text-[#002D72] max-w-[393px] min-w-[350px]  my-0 p-2 border-b-[0.20000000298023224px]  m-2  justify-between flex'>
       <div className='w-[60px] pt-3 mr-2 topic-card-avatar'>
         <Image
           src='/susan.jpg'
