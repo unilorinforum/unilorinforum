@@ -9,7 +9,6 @@ import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.compon
 import { wordCount, getLoggedInUser, getSavedTitle } from '../../functions';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDropzone } from 'react-dropzone';
 import { adminCategories, categories } from '../../common/categories';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
@@ -27,15 +26,13 @@ class NewTopicComponent extends Component {
     this.state = {
       topicTitle: '',
       topicContent: '',
-      coverImage: '',
+      isUploading: false,
       coverImageUrl: '',
       isFetching: false,
       multiple: true,
       category: 0,
       user: {},
       errmsg: null,
-      titleCount: 0,
-      contentCount: 0,
       isOpen: false,
     };
   }
@@ -50,23 +47,10 @@ class NewTopicComponent extends Component {
 
     console.log(this.state.user);
   }
-  // componentWillMount() {
-  //   const rawContent = JSON.parse(localStorage.getItem('UF_TITLE_INPUT'));
-  //   if (rawContent !== null) {
-  //     this.setState({ topicTitle: draftToHTML(rawContent) });
-  //   }
-  // }
   handletopicContentChange = (editorState) => {
     this.setState({
       topicContent: editorState,
     });
-    const contentHtml = draftToHTML(editorState);
-    const contentCount = wordCount(contentHtml);
-    this.setState({ contentCount: contentCount });
-
-    if (contentCount < 30) {
-      this.setState({ errmsg: 'Content is too short' });
-    }
   };
   handleTitleChange = (e) => {
     this.setState({
@@ -80,9 +64,6 @@ class NewTopicComponent extends Component {
     });
 
     const titleHtml = draftToHTML(titleEditorState);
-    const titleCount = wordCount(titleHtml);
-    this.setState({ titleCount: titleCount });
-    // console.log(this.state.titleCount);
   };
 
   handleCategorySelect = (category) => {
@@ -90,43 +71,65 @@ class NewTopicComponent extends Component {
     window.localStorage.setItem('UF_SAVED_CAT', JSON.stringify(category));
   };
 
+  uploadhandler = async (event) => {
+    const image = event.target.files[0];
+    this.setState({
+      isUploading: true ,
+    });
+      
+   const removeImage = () => {
+      this.setState({
+        coverImageUrl: '',
+      })
+     };
+    try {
+      const formData = new FormData();
+      formData.append('image', image, image.name);
+      const response = await axios.post('/images/cover-upload', formData);
+      if(response.data.success == 1){
+         this.setState({
+        coverImageUrl: `${process.env.NEXT_PUBLIC_API_URL}/${response.data.url}`,
+        isUploading: false
+      });
+      toast.success(response.data.message, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+      } 
+
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+      removeImage();
+    }
+    
+  };
+  removeCoverImage = (e) => {
+  e.preventDefault()
+      this.setState({
+        coverImageUrl: ``,
+    })
+  }
   handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (this.state.titleCount < 4) {
-      this.setState({
-        errmsg: 'Title is to short, make your title discriptive',
-      });
-      this.showErrorMessage(this.state.errmsg);
-    } else if (this.state.contentCount < 6) {
-      this.setState({
-        errmsg: 'Your Content is too short',
-      });
-      this.showErrorMessage(this.state.errmsg);
-    } else if (this.state.category == 0) {
-      this.setState({
-        errmsg: 'Pls Select a category',
-      });
-      this.showErrorMessage(this.state.errmsg);
-    } else {
-      const titleHtml = draftToHTML(this.state.topicTitle);
-      const contentHtml = draftToHTML(this.state.topicContent);
-      let payload = {
-        title: titleHtml,
-        articleCategory: this.state.category.value,
-        topicContent: contentHtml,
-        coverImageUrl: this.state.coverImage,
-        user_id: this.state.user.user_id,
-        author: this.state.user.username,
-      };
+    const titleHtml = draftToHTML(this.state.topicTitle);
+    const contentHtml = draftToHTML(this.state.topicContent);
+    let payload = {
+      title: titleHtml,
+      articleCategory: this.state.category.value,
+      topicContent: contentHtml,
+      coverImageUrl: this.state.coverImageUrl,
+      user_id: this.state.user.user_id,
+      author: this.state.user.username,
+    };
+    console.log('payload:', payload);
 
-      console.log('payload:', payload);
-
-      try {
-        const respones = await axios.post('/api/topics/create', payload);
-        console.log(respones.data);
-      } catch (error) {
-        console.log('error', error.respones);
-      }
+    try {
+      const respones = await axios.post('/topics/create', payload);
+      console.log(respones.data);
+    } catch (error) {
+      console.log('error', error.respones);
     }
   };
 
@@ -139,43 +142,10 @@ class NewTopicComponent extends Component {
       );
     },
   };
-  showErrorMessage = (message) => {
-    toast.error(message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
-  uploadhandler = async (event) => {
-    const image = event.target.files[0];
-    console.log(image);
-    image.isUploading = true;
-    this.setState({
-      coverImage: URL.createObjectURL(image),
-    });
-    const removeImage = () => {
-      this.setState({
-        coverImage: false,
-      });
-    };
-
-    try {
-      const formData = new FormData();
-
-      formData.append('image', image, image.name);
-      const response = await axios.post('/images/cover-upload', formData);
-      image.isUploading = false;
-      console.log('response', response);
-      this.setState({
-        coverImageUrl: `hhh`,
-        cover: true,
-      });
-    } catch (error) {
-      console.log(error);
-      removeImage();
-    }
-  };
+ 
 
   render() {
-    const { category, coverImage } = this.state;
+    const { category, isUploading, coverImageUrl} = this.state;
     return (
       <div>
         <ToastContainer />
@@ -201,10 +171,19 @@ class NewTopicComponent extends Component {
           <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className='w-full'>
               <div className='flex flex-col w-full '>
-                <div className={`${coverImage ? 'block' : 'hidden'}`}>
+                   <div className={`${isUploading ? 'block' : 'hidden'}`}>
                   <Image
-                    src={this.state.coverImage}
-                    height={100}
+                    src='/static/spinning-loading.gif'
+                    height={200}
+                    width={350}
+                    alt='cover'
+                    className='object-cover rounded-md'
+                  />
+                </div>
+                <div className={`${coverImageUrl  ? 'block' : 'hidden'}`}>
+                  <Image
+                    src={`${coverImageUrl ? coverImageUrl :'/'}`}
+                    height={150}
                     width={300}
                     alt='cover'
                     className='object-cover rounded-md'
@@ -212,7 +191,7 @@ class NewTopicComponent extends Component {
                 </div>
                 <div
                   className={` relative p-1 w-[200px] justify-center text-center border rounded-md items-center mt-2  ${
-                    coverImage ? 'hidden' : 'block'
+                    coverImageUrl ? 'hidden' : 'block'
                   }`}
                 >
                   <input
@@ -228,16 +207,11 @@ class NewTopicComponent extends Component {
                 </div>
                 <div
                   className={` relative p-1 w-[200px] justify-center  items-center text-center border-2 border-rose-500 rounded-md mt-2  ${
-                    coverImage ? 'block' : 'hidden'
+                    coverImageUrl ? 'block' : 'hidden'
                   }`}
                 >
                   <div
-                    onClick={(e) => {
-                      e.preventDefault;
-                      this.setState({
-                        coverImage: '',
-                      });
-                    }}
+                    onClick={this.removeCoverImage}
                     className=' font-bold cursor-pointer cover-btn text-[#ff0000]'
                   >
                     Remove Cover

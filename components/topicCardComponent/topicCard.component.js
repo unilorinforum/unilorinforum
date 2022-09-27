@@ -34,7 +34,7 @@ const TopicCardComponent = ({ topic }) => {
   useEffect(() => {
     const getAuthorData = async () => {
       const AuthorInfo = await axios(`/users/${topic.user_id}`);
-      console.log(AuthorInfo.data.user);
+      console.log('author info', AuthorInfo.data.user);
       setAuthorData(AuthorInfo.data.user);
     };
     getAuthorData();

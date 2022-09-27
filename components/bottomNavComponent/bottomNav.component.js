@@ -8,7 +8,7 @@ import NewPostButtonComponent from '../commonComponents/newPostButton.component'
 const BottomNavComponent = () => {
   return (
     <div className=''>
-      <div className=' flex bottom-[72px] z-50 right-4 absolute justify-end items-end '>
+      <div className=' flex bottom-[72px] fixed z-50 right-4 absolute justify-end items-end '>
         <NewPostButtonComponent />
       </div>
       <div className=' w-11/12 mobile-nav  fixed  z-50 md:hidden flex  items-center justify-around mx-4'>

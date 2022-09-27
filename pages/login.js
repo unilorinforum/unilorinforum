@@ -47,14 +47,10 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(
-        `/api/users/login`,
-        JSON.stringify(data),
-        {
-          headers: { 'content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`/users/login`, JSON.stringify(data), {
+        headers: { 'content-Type': 'application/json' },
+        withCredentials: true,
+      });
       // set user data
       console.log(response);
       setErrMsg(response.data.message);
@@ -69,7 +65,6 @@ export default function Login() {
           email: email,
           username: username,
         };
-
         setCookie('FORUM_LOGIN_DATA', JSON.stringify(userData), {
           maxAge: 60 * 60 * 24 * 90, //90 days
           path: '/',
@@ -133,7 +128,6 @@ export default function Login() {
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
             </div>
-            {/* <p>{result.message}</p> */}
             <input
               className=' font-bold text-center text-[#faf9f9] w-[240px] h-[40px] bg-[#002D72] mt-8 cursor-pointer rounded-full border-2 '
               type='submit'
