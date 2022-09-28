@@ -3,7 +3,7 @@ import axios from 'axios';
 import Router from 'next/router';
 import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
-// import FormInput from '../components/formInputComponent/forminput.component';
+import { toast, ToastContainer } from 'react-toastify';
 import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
 const SocialLogin = {
@@ -45,6 +45,9 @@ export default function SignUp() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
+    if(password !== passwordConfirm ){
+      setErrMsg('Password does not march');
+    }else{
     const data = { username, email, password, passwordConfirm };
     console.log(data, 'ooo');
 
@@ -59,11 +62,15 @@ export default function SignUp() {
 
       if (response.data.success == 1) {
         // console.log(response.data.success);
+        error
         setTimeout(() => {
           Router.push('/login');
         }, 5000);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  }
   };
 
   return (
@@ -78,13 +85,12 @@ export default function SignUp() {
           </span>
         </div>
         <div className='bg-[#01183a] bg-gradient-to-l w-[361px] rounded-sm sm:mx-2 from-[#c6d7f4] px-10 mt-4 pt-2 h-min '>
-          {' '}
           <div className=' flex items-center justify-center'>
             <span
               ref={errRef}
               className='text-[#ffffff] text-center font-bold text-xl w-[300px] '
             >
-              {errMsg}
+              <ToastContainer />
             </span>
           </div>
           <form
@@ -98,7 +104,7 @@ export default function SignUp() {
                 required
                 ref={usernameRef}
                 value={username}
-                // autoComplete='off'
+                autoComplete='off'
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder='Chose a username'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'

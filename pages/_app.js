@@ -6,6 +6,7 @@ import LeftSideBarComponent from '../components/sideBarComponent/leftSide.compon
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
 import { AuthProvider } from '../context/authProvider';
 import '../config/axios';
+import { useRouter } from 'next/router';
 
 import '../styles/globals.css';
 

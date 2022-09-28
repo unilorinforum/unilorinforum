@@ -260,16 +260,13 @@ p {
   }
   .author-name {
     /* UI Properties */
-    font: var(--unnamed-font-style-normal) normal
-      var(--unnamed-font-weight-normal) var(--unnamed-font-size-14) /
-      var(--unnamed-line-spacing-18) var(--unnamed-font-family-montserrat);
-    letter-spacing: var(--unnamed-character-spacing-0);
     color: var(--unnamed-color-002d72);
     text-align: left;
     font: normal normal normal 14px/18px Montserrat;
     letter-spacing: 0px;
     color: #002d72;
     opacity: 1;
+  
   }
   .topic-card-dot {
     /* top: 150px;
