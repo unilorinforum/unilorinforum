@@ -183,10 +183,18 @@ class NewTopicComponent extends Component {
     return (
       <div>
         <ToastContainer
-          style={{ width: '350px', height: '150px' }}
+          className={' w-[20px]'}
+          transition={Slide}
+          style={{
+            width: '300px',
+            height: '150px',
+            top: '60px',
+            left: '15px',
+            marginLeft: '20px',
+          }}
         />
 
-        <div className='pt-2 items-center bg-gray-light'>
+        <div className='pt-2  items-center bg-gray-light'>
           <div className='flex items-center p-2 pt-0 justify-between '>
             <div className='flex items-center cursor-pointer space-x-3'>
               <span className=' md:text-3xl flex items-center text-center py-1 px-3 rounded-lg  text-[#ffff] bg-[#000000] '>
@@ -204,20 +212,28 @@ class NewTopicComponent extends Component {
           </div>
         </div>
 
-        <div className='flex  min-h-screen bg-gray-light pt-2 justify-around  '>
-          <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
-            <form onSubmit={this.handleFormSubmit} className='w-full'>
-              <div className='flex flex-col w-full '>
-                <div className={`${isUploading ? 'block' : 'hidden'}`}>
+        <div className='flex  min-h-screen bg-gray-light px-3 pt-2 justify-around  '>
+          <div className='flex  mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
+            <form onSubmit={this.handleFormSubmit} className=''>
+              <div className='flex flex-col '>
+                <div
+                  className={`${
+                    isUploading ? 'block' : 'hidden'
+                  } w-[405px] px-2 mx-3`}
+                >
                   <Image
                     src='/static/spinning-loading.gif'
                     height={200}
                     width={350}
                     alt='cover'
-                    className='object-cover rounded-md'
+                    className='object-cover w-[405px] px-2 mx-3 rounded-md'
                   />
                 </div>
-                <div className={`${coverImageUrl ? 'block' : 'hidden'}`}>
+                <div
+                  className={`${
+                    coverImageUrl ? 'block' : 'hidden'
+                  } w-[405px] px-2 mx-3`}
+                >
                   <Image
                     src={`${coverImageUrl ? coverImageUrl : '/'}`}
                     height={150}
@@ -275,11 +291,11 @@ class NewTopicComponent extends Component {
                   contentHtml={this.state.contentHtml}
                 />
               </div>
-              <div className='flex cursor-pointer space-x-2'>
-                <div className='text-lg font-bold border-2 w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
+              <div className='flex cursor-pointer mx-0 py-1 w-full space-x-3 bg-gray-light px-1 fixed  z-50 bottom-0'>
+                <div className='text-lg font-bold  w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
                   <input type='submit' value='Publish' />
                 </div>
-                <div className='text-xm font-bold  py-1  '>
+                <div cl assName='text-xm font-bold text-[#030010] py-1  '>
                   <button>Save draft</button>
                 </div>
               </div>
