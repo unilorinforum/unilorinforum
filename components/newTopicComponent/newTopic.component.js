@@ -7,9 +7,10 @@ import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 import { wordCount, getLoggedInUser, getSavedTitle } from '../../functions';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer, Slide, Zoom, Flip, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { adminCategories, categories } from '../../common/categories';
+import {AiFillCloseSquare} from 'react-icons/ai'
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
@@ -19,6 +20,7 @@ const ContentInputComponent = dynamic(import('./contentInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
+ 
 
 class NewTopicComponent extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class NewTopicComponent extends Component {
       user: {},
       errmsg: null,
       isOpen: false,
+      isSubmiting: false,
     };
   }
 
@@ -74,45 +77,45 @@ class NewTopicComponent extends Component {
   uploadhandler = async (event) => {
     const image = event.target.files[0];
     this.setState({
-      isUploading: true ,
+      isUploading: true,
     });
-      
-   const removeImage = () => {
+
+    const removeImage = () => {
       this.setState({
         coverImageUrl: '',
-      })
-     };
+      });
+    };
     try {
       const formData = new FormData();
       formData.append('image', image, image.name);
       const response = await axios.post('/images/cover-upload', formData);
-      if(response.data.success == 1){
-         this.setState({
-        coverImageUrl: `${process.env.NEXT_PUBLIC_API_URL}/${response.data.url}`,
-        isUploading: false
-      });
-      toast.success(response.data.message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-      } 
-
+      if (response.data.success == 1) {
+        this.setState({
+          coverImageUrl: `${process.env.NEXT_PUBLIC_API_URL}/${response.data.url}`,
+          isUploading: false,
+        });
+        toast.success(response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } catch (error) {
       console.log(error.message);
       toast.error(error.message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
+        position: toast.POSITION.TOP_CENTER,
+        className: 'font-bold text-sm ',
+      });
       removeImage();
     }
-    
   };
   removeCoverImage = (e) => {
-  e.preventDefault()
-      this.setState({
-        coverImageUrl: ``,
-    })
-  }
+    e.preventDefault();
+  };
   handleFormSubmit = async (e) => {
     e.preventDefault();
+    const id = toast.loading('Submiting...', {
+      position: toast.POSITION.TOP_CENTER,
+      className: 'font-bold text-sm ',
+    });
     const titleHtml = draftToHTML(this.state.topicTitle);
     const contentHtml = draftToHTML(this.state.topicContent);
     let payload = {
@@ -127,17 +130,32 @@ class NewTopicComponent extends Component {
 
     try {
       const response = await axios.post('/topics/create', payload);
-      console.log(response.data);
-      if (response.data.success == 0){
-        toast.error(response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
+      if (response.data.success == 0) {
+        toast.update(id, {
+          render: response.data.message,
+          type: 'error',
+          isLoading: false,
+          closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
       }
-       if (response.data.success == 1) {
-         toast.success(response.data.message, {
-           position: toast.POSITION.TOP_RIGHT,
-         });
-       }
+      if (response.data.success == 1) {
+        toast.update(id, {
+          render: response.data.message,
+          type: 'success',
+          isLoading: false,
+          position: toast.POSITION.TOP_CENTER,
+          className: 'font-bold text-sm ',
+          autoClose: 10000,
+          closeButton: true,
+        });
+      }
     } catch (error) {
       console.log('error', error.message);
     }
@@ -152,13 +170,15 @@ class NewTopicComponent extends Component {
       );
     },
   };
- 
 
   render() {
-    const { category, isUploading, coverImageUrl} = this.state;
+    const { category, isUploading, coverImageUrl } = this.state;
     return (
       <div>
-        <ToastContainer />
+        <ToastContainer
+          style={{ width: '350px', height: '150px' }}
+        />
+
         <div className='pt-2 items-center bg-gray-light'>
           <div className='flex items-center p-2 pt-0 justify-between '>
             <div className='flex items-center cursor-pointer space-x-3'>
@@ -181,7 +201,7 @@ class NewTopicComponent extends Component {
           <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className='w-full'>
               <div className='flex flex-col w-full '>
-                   <div className={`${isUploading ? 'block' : 'hidden'}`}>
+                <div className={`${isUploading ? 'block' : 'hidden'}`}>
                   <Image
                     src='/static/spinning-loading.gif'
                     height={200}
@@ -190,9 +210,9 @@ class NewTopicComponent extends Component {
                     className='object-cover rounded-md'
                   />
                 </div>
-                <div className={`${coverImageUrl  ? 'block' : 'hidden'}`}>
+                <div className={`${coverImageUrl ? 'block' : 'hidden'}`}>
                   <Image
-                    src={`${coverImageUrl ? coverImageUrl :'/'}`}
+                    src={`${coverImageUrl ? coverImageUrl : '/'}`}
                     height={150}
                     width={300}
                     alt='cover'
