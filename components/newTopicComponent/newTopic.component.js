@@ -113,8 +113,9 @@ class NewTopicComponent extends Component {
   handleFormSubmit = async (e) => {
     e.preventDefault();
     const id = toast.loading('Submiting...', {
-      position: toast.POSITION.TOP_CENTER,
       className: 'font-bold text-sm ',
+      position: 'top-right',
+      transition: Slide,
     });
     const titleHtml = draftToHTML(this.state.topicTitle);
     const contentHtml = draftToHTML(this.state.topicContent);
@@ -143,6 +144,7 @@ class NewTopicComponent extends Component {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          transition: Slide,
         });
       }
       if (response.data.success == 1) {
@@ -150,10 +152,15 @@ class NewTopicComponent extends Component {
           render: response.data.message,
           type: 'success',
           isLoading: false,
-          position: toast.POSITION.TOP_CENTER,
-          className: 'font-bold text-sm ',
-          autoClose: 10000,
           closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Slide,
         });
       }
     } catch (error) {
