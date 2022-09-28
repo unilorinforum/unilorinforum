@@ -165,6 +165,20 @@ class NewTopicComponent extends Component {
       }
     } catch (error) {
       console.log('error', error.message);
+         toast.update(id, {
+           render: error.message,
+           type: 'error',
+           isLoading: false,
+           closeButton: true,
+           position: 'top-right',
+           autoClose: 5000,
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           transition: Slide,
+         });
     }
   };
 
@@ -213,26 +227,26 @@ class NewTopicComponent extends Component {
         </div>
 
         <div className='flex  min-h-screen bg-gray-light px-3 pt-2 justify-around  '>
-          <div className='flex  mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
+          <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className=''>
               <div className='flex flex-col '>
                 <div
                   className={`${
                     isUploading ? 'block' : 'hidden'
-                  } w-[405px] px-2 mx-3`}
+                  } `}
                 >
                   <Image
                     src='/static/spinning-loading.gif'
                     height={200}
                     width={350}
                     alt='cover'
-                    className='object-cover w-[405px] px-2 mx-3 rounded-md'
+                    className='object-cover  rounded-md'
                   />
                 </div>
                 <div
                   className={`${
                     coverImageUrl ? 'block' : 'hidden'
-                  } w-[405px] px-2 mx-3`}
+                  } `}
                 >
                   <Image
                     src={`${coverImageUrl ? coverImageUrl : '/'}`}
@@ -291,7 +305,7 @@ class NewTopicComponent extends Component {
                   contentHtml={this.state.contentHtml}
                 />
               </div>
-              <div className='flex cursor-pointer mx-0 py-1 w-full space-x-3 bg-gray-light px-1 fixed  z-50 bottom-0'>
+              <div className='flex rounded-lg cursor-pointer mx-0 py-1 w-full space-x-3 bg-gray-light px-1'>
                 <div className='text-lg font-bold  w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
                   <input type='submit' value='Publish' />
                 </div>
