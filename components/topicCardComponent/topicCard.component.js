@@ -41,8 +41,8 @@ const TopicCardComponent = ({ topic }) => {
   }, [topic.user_id]);
 
   return (
-    <div className='topic-card text-[#002D72] max-w-[393px] min-w-[350px] border-b border-[#d0caca]  my-0 p-2  mx-4   justify-between flex'>
-      <div className='w-[60px]  topic-card-avatar'>
+    <div className='topic-card text-[#002D72] max-w-[393px] min-w-[350px]  my-0 p-2 border-b-[0.20000000298023224px]  m-2  justify-between flex'>
+      <div className='w-[60px] pt-3 mr-2 topic-card-avatar'>
         <Image
           src='/susan.jpg'
           alt='auh'
@@ -53,13 +53,13 @@ const TopicCardComponent = ({ topic }) => {
           objectFit='contain'
         />
       </div>
-      <div className='font-MontserratBold mx-2  w-full'>
-        <div className='  items-center   text-[#002D72;] flex  justify-between '>
-          <span className='text-[20px] font-bold author-name'>{authorData.username}</span>
+      <div className='font-MontserratBold  w-full'>
+        <div className=' items-center   text-[#002D72;] flex  justify-between '>
+          <span className='text-[20px] author-name'>{authorData.username}</span>
           <div className='text-sm space-x-2 mr-3 justify-between flex items-center '>
-            <BsThreeDots className='h-[20px] topic-card-dot font-bold w-[25px] text-[#707070]' />
+            {/* <BsThreeDots className='h-[20px] topic-card-dot font-bold w-[20px] text-[#707070]' /> */}
             <span className='flex space-x-[2px] items-center '>
-              <BsFillEyeFill className=' text-[#f8910bab] font-bold p-x-[2px]' />
+              <BsFillEyeFill className=' text-[#FFAD40AB] p-x-[2px]' />
               <p className='topic-viwes-count'>10k</p>
             </span>
             <span className='topic-card-time'>2h Ago</span>
@@ -77,7 +77,7 @@ const TopicCardComponent = ({ topic }) => {
             {contentExcept}...
           </span>
           <span className='mr-3 flex text-sm space-x-[2px]  px-[2PX] items-center'>
-            <BsFillSuitHeartFill className='text-[#f08800ab]' />
+            <BsFillSuitHeartFill className='text-[#FFAD40AB]' />
             <p className='topic-likes-count'>10k</p>
           </span>
         </div>
