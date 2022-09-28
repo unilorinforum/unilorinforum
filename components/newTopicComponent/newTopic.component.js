@@ -226,8 +226,8 @@ class NewTopicComponent extends Component {
           </div>
         </div>
 
-        <div className='flex  min-h-screen bg-gray-light px-3 pt-2 justify-around  '>
-          <div className='flex overflow-scroll mx-0 p-2  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
+        <div className='flex  min-h-screen bg-gray-light mx-1 pt-2 justify-around  '>
+          <div className='flex overflow-scroll mx-0 p-3  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className=''>
               <div className='flex flex-col '>
                 <div
