@@ -3,7 +3,8 @@ import axios from 'axios';
 import Router from 'next/router';
 import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
 const SocialLogin = {
@@ -24,7 +25,6 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [errMsg, setErrMsg] = useState('');
   const emailRef = useRef();
   const errRef = useRef();
   const usernameRef = useRef();
@@ -39,14 +39,30 @@ export default function SignUp() {
     usernameRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    setErrMsg('');
-  }, [email, password]);
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
+     const id = toast.loading('Submiting...', {
+       className: 'font-bold text-sm ',
+       position: 'top-right',
+       autoClose: 5000,
+       transition: Slide,
+     });
     if(password !== passwordConfirm ){
-      setErrMsg('Password does not march');
+      toast.update(id, {
+        render: 'Password does not march',
+        type: 'error',
+        isLoading: false,
+        closeButton: true,
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        transition: Slide,
+      });
     }else{
     const data = { username, email, password, passwordConfirm };
     console.log(data, 'ooo');
@@ -55,10 +71,22 @@ export default function SignUp() {
       const endPoint = '/users/register';
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
-        withCredentials: true,
       });
       console.log(JSON.stringify(response));
-      setErrMsg(response.data.message);
+        toast.update(id, {
+          render: response.data.message,
+          type: 'error',
+          isLoading: false,
+          closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Slide,
+        });
 
       if (response.data.success == 1) {
         // console.log(response.data.success);
@@ -69,16 +97,40 @@ export default function SignUp() {
       }
     } catch (error) {
       console.log(error);
+         toast.update(id, {
+           render: error.message,
+           type: 'error',
+           isLoading: false,
+           closeButton: true,
+           position: 'top-right',
+           autoClose: 5000,
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           transition: Slide,
+         });
     }
   }
   };
 
   return (
     <>
+      <ToastContainer
+        transition={Slide}
+        style={{
+          width: '300px',
+          height: '150px',
+          top: '60px',
+          left: '15px',
+          marginLeft: '20px',
+        }}
+      />
       <div className='flex flex-col md:justify-center  items-center bg-[#000000] px-2 h-screen '>
         <div className='flex flex-col justify-center mb-3 mt-12 items-center '>
           <h2 className='text-[#F1CB97] text-3xl font-bold '>
-            welcome to Forum App
+            welcome to <Link href='/'>Forum App</Link>
           </h2>
           <span className='font-bold text-[#F1CB97] text-sm mt-2'>
             create an account to connect with students across
@@ -89,9 +141,7 @@ export default function SignUp() {
             <span
               ref={errRef}
               className='text-[#ffffff] text-center font-bold text-xl w-[300px] '
-            >
-              <ToastContainer />
-            </span>
+            ></span>
           </div>
           <form
             onSubmit={handleSubmmit}
@@ -114,7 +164,7 @@ export default function SignUp() {
                 type='email'
                 required
                 value={email}
-                // autoComplete='off'
+                autoComplete='off'
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Enter e-mail'
                 ref={emailRef}
@@ -126,7 +176,8 @@ export default function SignUp() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength='1'
+                minLength='6'
+                autoComplete='off'
                 placeholder='Enter password'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
@@ -136,7 +187,7 @@ export default function SignUp() {
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
                 required
-                minLength='1'
+                autoComplete='off'
                 placeholder='confirm password'
                 className='flex bg-[#FFFFFF] italic normal px-4 text-[#1D498BAB] rounded-md w-[312px] h-[48px]'
               />
