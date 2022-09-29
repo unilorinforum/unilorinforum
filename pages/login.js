@@ -117,6 +117,20 @@ export default function Login() {
       }
     } catch (error) {
       console.log(error);
+       toast.update(id, {
+         render: error.message,
+         type: 'error',
+         isLoading: false,
+         closeButton: true,
+         position: 'top-right',
+         autoClose: 5000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         transition: Slide,
+       });
     }
   };
 
