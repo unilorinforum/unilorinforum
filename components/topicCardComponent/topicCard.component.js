@@ -22,7 +22,6 @@ const style = {
 };
 const TopicCardComponent = ({ topic }) => {
   const [authorData, setAuthorData] = useState({});
-  // console.log(topic);
 
   const except = topic.content
     .replace(/^"(.*)"$/, '$1')
