@@ -49,7 +49,6 @@ export default function Login() {
     try {
       const response = await axios.post(`/users/login`, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
-        withCredentials: true,
       });
       // set user data
       console.log(response);
