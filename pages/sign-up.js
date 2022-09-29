@@ -69,7 +69,9 @@ export default function SignUp() {
 
     try {
       const endPoint = '/users/register';
-      const response = await axios.post(endPoint, JSON.stringify(data));
+      const response = await axios.post(endPoint, JSON.stringify(data), {
+        headers: { 'content-Type': 'application/json' },
+      });
       if (response.data.success == 0) {
         console.log(JSON.stringify(response));
         toast.update(id, {

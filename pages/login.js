@@ -56,9 +56,9 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(`/users/login`, JSON.stringify(data));
-      console.log(response);
-      // set user data
+      const response = await axios.post(`/users/login`, JSON.stringify(data), {
+        headers: { 'content-Type': 'application/json' },
+      });
        if (response.data.success !== 1) {
          console.log(response);
          toast.update(id, {
