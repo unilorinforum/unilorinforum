@@ -72,7 +72,8 @@ export default function SignUp() {
       const response = await axios.post(endPoint, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
       });
-      console.log(JSON.stringify(response));
+      if (response.data.success == 0) {
+        console.log(JSON.stringify(response));
         toast.update(id, {
           render: response.data.message,
           type: 'error',
@@ -87,10 +88,22 @@ export default function SignUp() {
           progress: undefined,
           transition: Slide,
         });
-
+      }
       if (response.data.success == 1) {
-        // console.log(response.data.success);
-        error
+          toast.update(id, {
+            render: response.data.message,
+            type: 'success',
+            isLoading: false,
+            closeButton: true,
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            transition: Slide,
+          });
         setTimeout(() => {
           Router.push('/login');
         }, 5000);

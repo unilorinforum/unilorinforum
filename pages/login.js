@@ -4,6 +4,8 @@ import Router from 'next/router';
 import React, { useState, useRef, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { toast, ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
@@ -44,26 +46,64 @@ export default function Login() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
+     const id = toast.loading('loging in...', {
+       className: 'font-bold text-sm ',
+       position: 'top-right',
+       autoClose: 5000,
+       transition: Slide,
+     });
+    
     const data = { email, password };
 
     try {
       const response = await axios.post(`/users/login`, JSON.stringify(data), {
         headers: { 'content-Type': 'application/json' },
       });
-      // set user data
       console.log(response);
-      setErrMsg(response.data.message);
+      // set user data
+       if (response.data.success !== 1) {
+         console.log(response);
+         toast.update(id, {
+           render: response.data.message,
+           type: 'error',
+           isLoading: false,
+           closeButton: true,
+           position: 'top-right',
+           autoClose: 5000,
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           transition: Slide,
+         });
+       }else
 
       //redirect user after sucessfull login
       if (response.data.success == 1) {
-        setPassword('');
-        setEmail('');
+         toast.update(id, {
+           render: response.data.message,
+           type: 'success',
+           isLoading: false,
+           closeButton: true,
+           position: 'top-right',
+           autoClose: 5000,
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           transition: Slide,
+         });
+        // setPassword('');
+        // setEmail('');
+       
         const { user_id, email, username, token } = response.data;
-        const userData = {
-          user_id: user_id,
+         const userData = {
+           user_id: user_id,
           email: email,
           username: username,
-        };
+        }
         setCookie('FORUM_LOGIN_DATA', JSON.stringify(userData), {
           maxAge: 60 * 60 * 24 * 90, //90 days
           path: '/',
@@ -77,12 +117,21 @@ export default function Login() {
       }
     } catch (error) {
       console.log(error);
-      setErrMsg('something went wrong');
     }
   };
 
   return (
     <>
+      <ToastContainer
+        transition={Slide}
+        style={{
+          width: '300px',
+          height: '150px',
+          top: '60px',
+          left: '15px',
+          marginLeft: '20px',
+        }}
+      />
       <div className='flex flex-col md:justify-center  items-center bg-[#000000] px-2 h-screen '>
         <div className='flex flex-col justify-center mb-3 mt-12 items-center '>
           <h2 className='text-[#F1CB97] text-xl font-bold '>
@@ -96,9 +145,7 @@ export default function Login() {
             <span
               ref={errRef}
               className='text-[#ffffff] text-center font-bold text-xl w-[300px] '
-            >
-              {errMsg}
-            </span>
+            ></span>
           </div>
           <form
             onSubmit={handleSubmmit}
