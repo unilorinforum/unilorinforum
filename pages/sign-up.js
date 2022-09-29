@@ -70,8 +70,9 @@ export default function SignUp() {
     try {
       const endPoint = '/users/register';
       const response = await axios.post(endPoint, data);
+       console.log(response);
       if (response.data.success == 0) {
-        console.log(JSON.stringify(response));
+       
         toast.update(id, {
           render: response.data.message,
           type: 'error',

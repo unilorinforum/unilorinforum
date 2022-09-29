@@ -29,7 +29,7 @@ const TopicCardComponent = ({ topic }) => {
     .replace(/(<([^>]+)>)/gi, '');
   const contentExcept = trimContent(except, 80);
 
-  const title = trimContent(topic.title, 80);
+  const title = trimContent(topic.title, 160);
 
   useEffect(() => {
     const getAuthorData = async () => {
@@ -68,7 +68,7 @@ const TopicCardComponent = ({ topic }) => {
         <div className=' items-cente mb-2 w- '>
           <h2 className='text-xl font-MEB font-bold topic-card-title'>
             <Link href={'/#'}>
-              <a>{title}...</a>
+              <a>{title}</a>
             </Link>
           </h2>
         </div>
