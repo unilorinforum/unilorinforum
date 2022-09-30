@@ -11,6 +11,7 @@ import { toast, ToastContainer, Slide, Zoom, Flip, Bounce } from 'react-toastify
 import 'react-toastify/dist/ReactToastify.css';
 import { adminCategories, categories } from '../../common/categories';
 import {AiFillCloseSquare} from 'react-icons/ai'
+import NewPostHeaderComponent from '../headerComponent/newPostHeader.component';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
   ssr: false,
@@ -79,12 +80,6 @@ class NewTopicComponent extends Component {
     this.setState({
       isUploading: true,
     });
-
-    const removeImage = () => {
-      this.setState({
-        coverImageUrl: '',
-      });
-    };
     try {
       const formData = new FormData();
       formData.append('image', image, image.name);
@@ -101,14 +96,22 @@ class NewTopicComponent extends Component {
     } catch (error) {
       console.log(error.message);
       toast.error(error.message, {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.TOP_RIGHT,
         className: 'font-bold text-sm ',
       });
-      removeImage();
+      this.removeCoverImage()
     }
   };
   removeCoverImage = (e) => {
     e.preventDefault();
+     this.setState({
+       coverImageUrl: '',
+       isUploading: false,
+     });
+        toast.success('cover removed', {
+          position: toast.POSITION.TOP_RIGHT,
+          className: 'font-bold text-sm ',
+        });
   };
   handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -208,25 +211,9 @@ class NewTopicComponent extends Component {
           }}
         />
 
-        <div className='pt-2  items-center bg-gray-light'>
-          <div className='flex items-center p-2 pt-0 justify-between '>
-            <div className='flex items-center cursor-pointer space-x-3'>
-              <span className=' md:text-3xl flex items-center text-center py-1 px-3 rounded-lg  text-[#ffff] bg-[#000000] '>
-                <Link href='/'>
-                  <a>App</a>
-                </Link>
-              </span>
-              <span className='text-xl font-bold'>Create Post</span>
-            </div>
-            <div className='space-x-2'>
-              <button>Edit</button>
-              <button> Preview</button>
-            </div>
-            <button>x</button>
-          </div>
-        </div>
+       <NewPostHeaderComponent />
 
-        <div className='flex   min-h-screen bg-gray-light mx-1 pt-2 justify-around  '>
+        <div className='flex  min-h-screen bg-gray-light mx-1 pt-2 justify-around  '>
           <div className='flex overflow-scroll mx-0 p-3  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className=''>
               <div className='flex flex-col '>
