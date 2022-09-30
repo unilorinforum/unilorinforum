@@ -57,6 +57,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(`/users/login`, data, {
+        withCredentials: true,
         headers: {
           'Access-Control-Allow-Credentials': true,
         },
