@@ -56,10 +56,11 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(`/users/login`, data, {
-        withCredentials: true,
+      const endPoint = '/users/login';
+      const response = await axios.post(endPoint, data, {
         headers: {
           'Access-Control-Allow-Credentials': true,
+          withCredentials: true,
         },
       });
        console.log(response);
