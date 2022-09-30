@@ -56,7 +56,12 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(`/users/login`, data);
+      const response = await axios.post(`/users/login`, data, {
+        headers: {
+          'Access-Control-Allow-Credentials': true,
+        },
+      });
+       console.log(response);
        if (response.data.success !== 1) {
          console.log(response);
          toast.update(id, {
@@ -74,8 +79,6 @@ export default function Login() {
            transition: Slide,
          });
        }else
-
-      //redirect user after sucessfull login
       if (response.data.success == 1) {
          toast.update(id, {
            render: response.data.message,
@@ -111,7 +114,8 @@ export default function Login() {
           username: username,
         });
       }
-    } catch (error) {
+    }
+     catch (error) {
       console.log(error);
        toast.update(id, {
          render: error.message,

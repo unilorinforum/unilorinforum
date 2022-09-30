@@ -4,8 +4,13 @@ import Router from 'next/router';
 import { AiOutlineClose } from 'react-icons/ai';
 
 const NewPostHeaderComponent = () => {
-const handleClose   = () => {
- Router.asPath == '/' ? Router.back() : Router.push('/');
+const handleClose   = async () => {
+    console.log(window.history);
+   if (typeof window !== 'undefined' && +window?.history?.state?.idx > 0) {
+        //  Router.back()
+      } else {
+        //  Router.push('/')
+      }
 }
 
     return (

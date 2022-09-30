@@ -11,6 +11,8 @@ import { useRouter } from 'next/router';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
+
+  
   if (Component.getLayout) {
     return Component.getLayout(
       <AuthProvider>
