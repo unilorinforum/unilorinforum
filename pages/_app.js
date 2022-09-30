@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }) {
   if (Component.getLayout) {
     return Component.getLayout(
       <AuthProvider>
+        
         <Component {...pageProps} />
       </AuthProvider>
     );

@@ -32,7 +32,8 @@ export default function Login() {
 
   useEffect(() => {
     if (auth.user_id) {
-      Router.back();
+      console.log(window.location.pathname);
+      // Router.back();
     }
   }, [auth]);
 
@@ -46,65 +47,60 @@ export default function Login() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
-     const id = toast.loading('loging in...', {
-       className: 'font-bold text-sm ',
-       position: 'top-right',
-       autoClose: 5000,
-       transition: Slide,
-     });
-    
+    const id = toast.loading('loging in...', {
+      className: 'font-bold text-sm ',
+      position: 'top-right',
+      autoClose: 5000,
+      transition: Slide,
+    });
+
     const data = { email, password };
 
     try {
-      const endPoint = '/users/login';
-      const response = await axios.post(endPoint, data, {
-        headers: {
-          'Access-Control-Allow-Credentials': true,
-          withCredentials: true,
-        },
-      });
-       console.log(response);
-       if (response.data.success !== 1) {
-         console.log(response);
-         toast.update(id, {
-           render: response.data.message,
-           type: 'error',
-           isLoading: false,
-           closeButton: true,
-           position: 'top-right',
-           autoClose: 5000,
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           transition: Slide,
-         });
-       }else
-      if (response.data.success == 1) {
-         toast.update(id, {
-           render: response.data.message,
-           type: 'success',
-           isLoading: false,
-           closeButton: true,
-           position: 'top-right',
-           autoClose: 5000,
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           transition: Slide,
-         });
+      const response = await axios.post(`/users/login`, data);
+      if (response.data.success !== 1) {
+        console.log(response);
+        toast.update(id, {
+          render: response.data.message,
+          type: 'error',
+          isLoading: false,
+          closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Slide,
+        });
+      }
+
+      //redirect user after sucessfull login
+      else if (response.data.success == 1) {
+        toast.update(id, {
+          render: response.data.message,
+          type: 'success',
+          isLoading: false,
+          closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Slide,
+        });
         // setPassword('');
         // setEmail('');
-       
+
         const { user_id, email, username, token } = response.data;
-         const userData = {
-           user_id: user_id,
+        const userData = {
+          user_id: user_id,
           email: email,
           username: username,
-        }
+        };
         setCookie('FORUM_LOGIN_DATA', JSON.stringify(userData), {
           maxAge: 60 * 60 * 24 * 90, //90 days
           path: '/',
@@ -116,23 +112,22 @@ export default function Login() {
           username: username,
         });
       }
-    }
-     catch (error) {
+    } catch (error) {
       console.log(error);
-       toast.update(id, {
-         render: error.message,
-         type: 'error',
-         isLoading: false,
-         closeButton: true,
-         position: 'top-right',
-         autoClose: 5000,
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         transition: Slide,
-       });
+      toast.update(id, {
+        render: error.message,
+        type: 'error',
+        isLoading: false,
+        closeButton: true,
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        transition: Slide,
+      });
     }
   };
 
