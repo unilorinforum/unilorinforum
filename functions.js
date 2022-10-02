@@ -7,7 +7,7 @@ import {
 } from 'cookies-next';
 import { useEffect } from 'react';
 import axios from 'axios';
-
+import Router from 'next/router';
 const wordCount = (str) => {
   const wordArray = str.split(' ');
   return wordArray.filter((word) => word !== '').length;
@@ -21,6 +21,15 @@ const getLoggedInUser = () => {
   }
 
   return null;
+};
+
+const pageRedirect = () => {
+  const userFIrstPage = JSON.parse(localStorage.getItem('UF_USER_FIRST_PAGE'));
+  if (Router.asPath == userFIrstPage) {
+    Router.push('/');
+  } else {
+    Router.back();
+  }
 };
 
 const getSavedTitle = () => {
@@ -71,4 +80,5 @@ module.exports = {
   getUserInfo,
   stripHtml,
   replaceNbsps,
+  pageRedirect,
 };

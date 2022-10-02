@@ -9,9 +9,8 @@ const LogoutComponent = () => {
   const [mss, setMss] = useState('');
 
   const logOut = async () => {
-    const res = await axios.post('/api/users/logout');
+    const res = await axios.post('/users/logout');
     setMss(res.data.message);
-    // console.log(res);
     if (res.data.success == 1) {
       Router.back();
     }

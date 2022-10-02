@@ -2,16 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { AiOutlineClose } from 'react-icons/ai';
+import{pageRedirect} from '../../functions'
 
 const NewPostHeaderComponent = () => {
-const handleClose   = async () => {
-    console.log(window.history);
-   if (typeof window !== 'undefined' && +window?.history?.state?.idx > 0) {
-        //  Router.back()
-      } else {
-        //  Router.push('/')
+const handleClose   = () => {
+       pageRedirect()
       }
-}
+
 
     return (
       <div className='pt-2  items-center bg-gray-light'>

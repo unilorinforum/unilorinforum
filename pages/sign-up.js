@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import axios from 'axios';
 import Router from 'next/router';
+import {pageRedirect} from '../functions'
 import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
 import { toast, ToastContainer, Slide } from 'react-toastify';
@@ -102,9 +103,7 @@ export default function SignUp() {
             progress: undefined,
             transition: Slide,
           });
-        setTimeout(() => {
-          Router.push('/login');
-        }, 5000);
+        pageRedirect();
       }
     } catch (error) {
       console.log(error);
@@ -252,7 +251,6 @@ export default function SignUp() {
 SignUp.getLayout = function pageLayout(page) {
   return (
     <>
-      {/* <Header /> */}
       {page}
     </>
   );

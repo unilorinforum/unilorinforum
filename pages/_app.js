@@ -6,17 +6,20 @@ import LeftSideBarComponent from '../components/sideBarComponent/leftSide.compon
 import RightSideBarComponent from '../components/sideBarComponent/rightSideBar.component';
 import { AuthProvider } from '../context/authProvider';
 import '../config/axios';
-import { useRouter } from 'next/router';
+import Router, {useRouter}  from 'next/router';
+import { useEffect, useState } from 'react';
 
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-
+const MyRouter = useRouter()
+useEffect(() => {
+   localStorage.setItem('UF_USER_FIRST_PAGE', JSON.stringify(Router.asPath));
+}, []);
   
   if (Component.getLayout) {
     return Component.getLayout(
       <AuthProvider>
-        
         <Component {...pageProps} />
       </AuthProvider>
     );

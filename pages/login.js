@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { toast, ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import{pageRedirect } from  '../functions'
 
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
@@ -32,8 +33,9 @@ export default function Login() {
 
   useEffect(() => {
     if (auth.user_id) {
-      console.log(window.location.pathname);
-      // Router.back();
+      // const userVisitPaths = JSON.parse(localStorage.getItem('UF_USER_PATH'));
+      // console.log(userVisitPaths[-1], 'vv');
+      // // Router.back();
     }
   }, [auth]);
 
@@ -47,6 +49,7 @@ export default function Login() {
 
   const handleSubmmit = async (event) => {
     event.preventDefault();
+    console.log(window.history.back);
     const id = toast.loading('loging in...', {
       className: 'font-bold text-sm ',
       position: 'top-right',
@@ -111,6 +114,8 @@ export default function Login() {
           email: email,
           username: username,
         });
+
+        pageRedirect();
       }
     } catch (error) {
       console.log(error);

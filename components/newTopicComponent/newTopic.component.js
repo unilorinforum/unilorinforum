@@ -56,12 +56,12 @@ class NewTopicComponent extends Component {
       topicContent: editorState,
     });
   };
-  handleTitleChange = (e) => {
-    this.setState({
-      topicTitle: e.target.value,
-    });
-    console.log(this.state.topicTitle);
-  };
+  // handleTitleChange = (e) => {
+  //   this.setState({
+  //     topicTitle: e.target.value,
+  //   });
+  //   console.log(this.state.topicTitle);
+  // };
   handletopicTitleChange = (titleEditorState) => {
     this.setState({
       topicTitle: titleEditorState,
@@ -285,11 +285,9 @@ class NewTopicComponent extends Component {
                   placeholder={'Select A Sutable Category'}
                 />
                 <ContentInputComponent
-                  key={'dd'}
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   handletopicContentChange={this.handletopicContentChange}
-                  contentHtml={this.state.contentHtml}
                 />
               </div>
               <div className='flex rounded-lg cursor-pointer mx-0 py-1 w-full space-x-3 bg-gray-light px-1'>

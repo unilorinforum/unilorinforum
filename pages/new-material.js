@@ -14,7 +14,6 @@ export default NewMaterial;
 NewMaterial.getLayout = function pageLayout(page) {
   return (
     <>
-      {/* <Header /> */}
       {page}
     </>
   );
