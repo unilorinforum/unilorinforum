@@ -89,7 +89,10 @@ class NewTopicComponent extends Component {
     try {
       const formData = new FormData();
       formData.append('image', image, image.name);
-      const response = await axios.post('/images/cover-upload', formData);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/images/cover-upload`,
+        formData
+      );
       if (response.data.success == 1) {
         this.setState({
           coverImageUrl: `${process.env.NEXT_PUBLIC_API_URL}/${response.data.url}`,
@@ -109,7 +112,6 @@ class NewTopicComponent extends Component {
     }
   };
   removeCoverImage = (e) => {
-    e.preventDefault();
     this.setState({
       coverImageUrl: '',
       isUploading: false,

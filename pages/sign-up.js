@@ -68,7 +68,7 @@ export default function SignUp() {
       console.log(data, 'ooo');
 
       try {
-        const endPoint = '/users/register';
+        const endPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`;
         const response = await axios.post(endPoint, data);
         console.log(response);
         if (response.data.success == 0) {

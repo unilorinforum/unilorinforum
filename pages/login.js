@@ -60,7 +60,10 @@ export default function Login() {
     const data = { email, password };
 
     try {
-      const response = await axios.post(`/users/login`, data);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/login`,
+        data
+      );
       if (response.data.success !== 1) {
         console.log(response);
         toast.update(id, {
