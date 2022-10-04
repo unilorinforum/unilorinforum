@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { toast, ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import{pageRedirect } from  '../functions'
+import { pageRedirect } from '../functions';
 
 // import Header from '../components/headerComponent/header.component';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';

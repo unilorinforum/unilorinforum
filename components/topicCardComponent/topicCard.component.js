@@ -40,8 +40,8 @@ const TopicCardComponent = ({ topic }) => {
   }, [topic.user_id]);
 
   return (
-    <div className='topic-card text-[#002D72] max-w-[393px] min-w-[350px]  my-0 p-2 border-b-[0.20000000298023224px]  m-2  justify-between flex'>
-      <div className='w-[60px] pt-3 mr-2 topic-card-avatar'>
+    <div className='topic-card text-[#002D72]  w-screen  max-w-[393px] p-2 border-b-[0.20000000298023224px] border-[#2223]  m-0  flex'>
+      <div className='w-[60px] pt-0 mr-2 topic-card-avatar m-r'>
         <Image
           src='/susan.jpg'
           alt='auh'
@@ -52,9 +52,11 @@ const TopicCardComponent = ({ topic }) => {
           objectFit='contain'
         />
       </div>
-      <div className='font-MontserratBold  w-full'>
-        <div className=' items-center   text-[#002D72;] flex  justify-between '>
-          <span className='text-[20px] author-name'>{authorData.username}</span>
+      <div className='font-MontserratBold'>
+        <div className='mx-0  w-full text-[#002D72;] flex  justify-between '>
+          <span className='text-[20px] author-name'>
+            sammy{authorData.username}
+          </span>
           <div className='text-sm space-x-2 mr-3 justify-between flex items-center '>
             {/* <BsThreeDots className='h-[20px] topic-card-dot font-bold w-[20px] text-[#707070]' /> */}
             <span className='flex space-x-[2px] items-center '>
@@ -64,7 +66,7 @@ const TopicCardComponent = ({ topic }) => {
             <span className='topic-card-time'>2h Ago</span>
           </div>
         </div>
-        <div className=' items-cente mb-2 w- '>
+        <div className=' w-full items-cente mb-2 '>
           <h2 className='text-xl font-MEB font-bold topic-card-title'>
             <Link href={'/#'}>
               <a>{title}</a>
@@ -81,11 +83,10 @@ const TopicCardComponent = ({ topic }) => {
           </span>
         </div>
         <div>
-          {' '}
-          {topic.cover_Image_url ? (
+          {topic.coverImageUrl ? (
             <div className='mt-1 w-[313px] h-[136px]'>
               <Image
-                src={`${topic.cover_Image_url}`}
+                src={`${topic.coverImageUrl}`}
                 alt='auh'
                 width={313}
                 height={136}

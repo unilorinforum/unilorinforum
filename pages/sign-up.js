@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import axios from 'axios';
 import Router from 'next/router';
-import {pageRedirect} from '../functions'
+import { pageRedirect } from '../functions';
 import useAuth from '../hooks/useAuth';
 import React, { useState, useRef, useEffect } from 'react';
 import { toast, ToastContainer, Slide } from 'react-toastify';
@@ -31,25 +31,24 @@ export default function SignUp() {
   const usernameRef = useRef();
 
   useEffect(() => {
-    if (auth.user_id) {
-      Router.back();
-    }
+    // if (auth.user_id) {
+    //   Router.back();
+    // }
   }, [auth]);
 
   useEffect(() => {
     usernameRef.current.focus();
   }, []);
 
-
   const handleSubmmit = async (event) => {
     event.preventDefault();
-     const id = toast.loading('Submiting...', {
-       className: 'font-bold text-sm ',
-       position: 'top-right',
-       autoClose: 5000,
-       transition: Slide,
-     });
-    if(password !== passwordConfirm ){
+    const id = toast.loading('Submiting...', {
+      className: 'font-bold text-sm ',
+      position: 'top-right',
+      autoClose: 5000,
+      transition: Slide,
+    });
+    if (password !== passwordConfirm) {
       toast.update(id, {
         render: 'Password does not march',
         type: 'error',
@@ -64,31 +63,31 @@ export default function SignUp() {
         progress: undefined,
         transition: Slide,
       });
-    }else{
-    const data = { username, email, password, passwordConfirm };
-    console.log(data, 'ooo');
+    } else {
+      const data = { username, email, password, passwordConfirm };
+      console.log(data, 'ooo');
 
-    try {
-      const endPoint = '/users/register';
-      const response = await axios.post(endPoint, data);
-       console.log(response);
-      if (response.data.success == 0) {
-        toast.update(id, {
-          render: response.data.message,
-          type: 'error',
-          isLoading: false,
-          closeButton: true,
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          transition: Slide,
-        });
-      }
-      if (response.data.success == 1) {
+      try {
+        const endPoint = '/users/register';
+        const response = await axios.post(endPoint, data);
+        console.log(response);
+        if (response.data.success == 0) {
+          toast.update(id, {
+            render: response.data.message,
+            type: 'error',
+            isLoading: false,
+            closeButton: true,
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            transition: Slide,
+          });
+        }
+        if (response.data.success == 1) {
           toast.update(id, {
             render: response.data.message,
             type: 'success',
@@ -103,26 +102,26 @@ export default function SignUp() {
             progress: undefined,
             transition: Slide,
           });
-        pageRedirect();
+          // pageRedirect();
+        }
+      } catch (error) {
+        console.log(error);
+        toast.update(id, {
+          render: error.message,
+          type: 'error',
+          isLoading: false,
+          closeButton: true,
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Slide,
+        });
       }
-    } catch (error) {
-      console.log(error);
-         toast.update(id, {
-           render: error.message,
-           type: 'error',
-           isLoading: false,
-           closeButton: true,
-           position: 'top-right',
-           autoClose: 5000,
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           transition: Slide,
-         });
     }
-  }
   };
 
   return (
@@ -249,9 +248,5 @@ export default function SignUp() {
   );
 }
 SignUp.getLayout = function pageLayout(page) {
-  return (
-    <>
-      {page}
-    </>
-  );
+  return <>{page}</>;
 };

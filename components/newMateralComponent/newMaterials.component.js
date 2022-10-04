@@ -75,10 +75,19 @@ const onChange = () => {
               <div className='flex flex-col py-2 space-y-1 w-full items-center '>
                 <div className='flex  rounded-sm items-center bg-[#fff] space-x-4 max-w-11/12 x px-2 '>
                   <span className='font-bold whitespace-normal p-1 w-11/12 leading-4 break-words'>
-                    ffffownnnnnnnnnnnn
+                    tripple hay gns 111
                   </span>
                   <AiFillDelete />
                 </div>
+              </div>
+            </div>
+            <div className='flex cursor-pointer my-2 py-1 w-full space-x-3 bg-[#eeeeee] px-1'>
+              <div className='text-lg font-bold  w-fit px-8 py-1 rounded-lg bg-[#030010] text-[#ffffff]'>
+               
+                <span>Publish</span>
+              </div>
+              <div cl assName='text-xm font-bold text-[#030010] py-1  '>
+                <button>Save draft</button>
               </div>
             </div>
           </div>

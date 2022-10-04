@@ -7,10 +7,17 @@ import Link from 'next/link';
 import draftToHTML from 'draftjs-to-html';
 import NewTopicSidebarComponent from '../sideBarComponent/newTopicSidebar.component';
 import { wordCount, getLoggedInUser, getSavedTitle } from '../../functions';
-import { toast, ToastContainer, Slide, Zoom, Flip, Bounce } from 'react-toastify';
+import {
+  toast,
+  ToastContainer,
+  Slide,
+  Zoom,
+  Flip,
+  Bounce,
+} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { adminCategories, categories } from '../../common/categories';
-import {AiFillCloseSquare} from 'react-icons/ai'
+import { AiFillCloseSquare } from 'react-icons/ai';
 import NewPostHeaderComponent from '../headerComponent/newPostHeader.component';
 
 const TitleInputComponent = dynamic(import('./titleInput.component'), {
@@ -21,7 +28,6 @@ const ContentInputComponent = dynamic(import('./contentInput.component'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
- 
 
 class NewTopicComponent extends Component {
   constructor(props) {
@@ -99,19 +105,19 @@ class NewTopicComponent extends Component {
         position: toast.POSITION.TOP_RIGHT,
         className: 'font-bold text-sm ',
       });
-      this.removeCoverImage()
+      this.removeCoverImage();
     }
   };
   removeCoverImage = (e) => {
     e.preventDefault();
-     this.setState({
-       coverImageUrl: '',
-       isUploading: false,
-     });
-        toast.success('cover removed', {
-          position: toast.POSITION.TOP_RIGHT,
-          className: 'font-bold text-sm ',
-        });
+    this.setState({
+      coverImageUrl: '',
+      isUploading: false,
+    });
+    toast.success('cover removed', {
+      position: toast.POSITION.TOP_RIGHT,
+      className: 'font-bold text-sm ',
+    });
   };
   handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -124,7 +130,7 @@ class NewTopicComponent extends Component {
     const contentHtml = draftToHTML(this.state.topicContent);
     let payload = {
       title: titleHtml,
-      articleCategory: this.state.category.value,
+      topicCategory: this.state.category.value,
       topicContent: contentHtml,
       coverImageUrl: this.state.coverImageUrl,
       user_id: this.state.user.user_id,
@@ -168,20 +174,20 @@ class NewTopicComponent extends Component {
       }
     } catch (error) {
       console.log('error', error.message);
-         toast.update(id, {
-           render: error.message,
-           type: 'error',
-           isLoading: false,
-           closeButton: true,
-           position: 'top-right',
-           autoClose: 5000,
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           transition: Slide,
-         });
+      toast.update(id, {
+        render: error.message,
+        type: 'error',
+        isLoading: false,
+        closeButton: true,
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        transition: Slide,
+      });
     }
   };
 
@@ -211,17 +217,13 @@ class NewTopicComponent extends Component {
           }}
         />
 
-       <NewPostHeaderComponent />
+        <NewPostHeaderComponent />
 
         <div className='flex  min-h-screen bg-gray-light mx-1 pt-2 justify-around  '>
           <div className='flex overflow-scroll mx-0 p-3  mt-6 bg-[#ffff] rounded-md text-[#000] justify-around min-h-[560px] md:h-[560px] w-[700px] max-w-[750px]  space-y-2 '>
             <form onSubmit={this.handleFormSubmit} className=''>
               <div className='flex flex-col '>
-                <div
-                  className={`${
-                    isUploading ? 'block' : 'hidden'
-                  } `}
-                >
+                <div className={`${isUploading ? 'block' : 'hidden'} `}>
                   <Image
                     src='/static/spinning-loading.gif'
                     height={200}
@@ -230,11 +232,7 @@ class NewTopicComponent extends Component {
                     className='object-cover  rounded-md'
                   />
                 </div>
-                <div
-                  className={`${
-                    coverImageUrl ? 'block' : 'hidden'
-                  } `}
-                >
+                <div className={`${coverImageUrl ? 'block' : 'hidden'} `}>
                   <Image
                     src={`${coverImageUrl ? coverImageUrl : '/'}`}
                     height={150}
